@@ -2,6 +2,8 @@ package com.company;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -15,6 +17,8 @@ public class GameWindows extends Frame {
     Image planeImage;
     Image islandImage;
     Image bulletImage;
+    private int planeX=200-35;
+
     public GameWindows() {
         setVisible(true);
         setSize(400, 600);
@@ -38,6 +42,27 @@ public class GameWindows extends Frame {
         planeImage=loadImage("plane3.png");
         bulletImage=loadImage("bullet.png");
         update(getGraphics());
+        addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent keyEvent) {
+                super.keyTyped(keyEvent);
+            }
+
+            @Override
+            public void keyPressed(KeyEvent keyEvent) {
+                super.keyPressed(keyEvent);
+                if(keyEvent.getKeyCode()==KeyEvent.VK_RIGHT)
+                {
+                    planeX+=10;
+                    repaint();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent keyEvent) {
+                super.keyReleased(keyEvent);
+            }
+        });
     }
     private Image loadImage(String url) {
         try {
@@ -50,7 +75,7 @@ public class GameWindows extends Frame {
     }
     public void update(Graphics g) {
         g.drawImage(backgroundImage, 0, 0, 400, 600, null);
-        g.drawImage(planeImage, 150, 500, 70, 51, null);
+        g.drawImage(planeImage, planeX, 600-55, 70, 51, null);
         g.drawImage(bulletImage,180,250,7,17,null);
 
     }
