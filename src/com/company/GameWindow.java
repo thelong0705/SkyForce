@@ -12,12 +12,14 @@ import java.io.IOException;
 public class GameWindow extends Frame {
     Image backgroundImage;
     Image planeImage;
-    int planeX = 200 - 35;
-    int planeY = 600 - 50;
+    int frameWidthSize = 400;
+    int frameHeightSize = 600;
+    int planeX = frameWidthSize / 2 - 35;
+    int planeY = frameHeightSize - 50;
 
     public GameWindow() {
         setVisible(true);
-        setSize(400, 600);
+        setSize(frameWidthSize, frameHeightSize);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
@@ -51,19 +53,31 @@ public class GameWindow extends Frame {
                 super.keyPressed(keyEvent);
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_RIGHT:
-                        planeX += 10;
+                        if (planeX + 10 > frameWidthSize - 70) ;
+                        else
+                            planeX += 10;
+                        
                         update(getGraphics());
                         break;
                     case KeyEvent.VK_LEFT:
-                        planeX -= 10;
+                        if (planeX - 10 < 0) ;
+                        else
+                            planeX -= 10;
+
                         update(getGraphics());
                         break;
                     case KeyEvent.VK_UP:
-                        planeY -= 10;
+                        if (planeY - 10 < 30) ;
+                        else
+                            planeY -= 10;
+
                         update(getGraphics());
                         break;
                     case KeyEvent.VK_DOWN:
-                        planeY += 10;
+                        if (planeY + 10 > frameHeightSize - 50) ;
+                        else
+                            planeY += 10;
+
                         update(getGraphics());
                         break;
                 }
@@ -78,7 +92,7 @@ public class GameWindow extends Frame {
 
     @Override
     public void update(Graphics graphics) {
-        graphics.drawImage(backgroundImage, 0, 0, 400, 600, null);
+        graphics.drawImage(backgroundImage, 0, 0, frameWidthSize, frameHeightSize, null);
         graphics.drawImage(planeImage, planeX, planeY, 70, 50, null);
     }
 
