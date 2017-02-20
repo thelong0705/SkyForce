@@ -4,6 +4,6 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code her
-        GameWindows gameWindow = new GameWindows();
+    GameWindow gameWindow = new GameWindow();
     }
 }
