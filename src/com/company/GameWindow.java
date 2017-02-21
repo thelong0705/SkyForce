@@ -9,18 +9,29 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.*;
+import java.util.List;
 
 public class GameWindow extends Frame {
     Image backgroundImage;
     Image planeImage;
+    Image enemyPlaneImage;
+    Image bulletImage;
     int frameWidthSize = 400;
     int frameHeightSize = 600;
     int planeX = frameWidthSize / 2 - 35;
     int planeY = frameHeightSize - 50;
+    int enemyPlaneX = frameWidthSize / 2 - 16;
+    int enemyPlaneY = 30;
+    int bulletX;
+    int bulletY;
+    boolean isBulletExist = false;
     private int SPEED = 10;
     private BufferedImage backBufferedImage;
     Thread thread;
     private Graphics backGraphics;
+    //PlayerBullet playerBullet;
+    ArrayList<PlayerBullet> playerBulletList=new ArrayList<PlayerBullet>();
 
     public GameWindow() {
         setVisible(true);
@@ -46,7 +57,9 @@ public class GameWindow extends Frame {
 //        }
         backgroundImage = loadImageFromFile("background.png");
         planeImage = loadImageFromFile("plane3.png");
-        update(getGraphics());
+        enemyPlaneImage = loadImageFromFile("enemy_plane_white_1.png");
+        //bulletImage=loadImageFromFile("bullet.png");
+
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
@@ -57,6 +70,15 @@ public class GameWindow extends Frame {
             public void keyPressed(KeyEvent keyEvent) {
                 super.keyPressed(keyEvent);
                 switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.VK_SPACE:
+                        PlayerBullet playerBullet = new PlayerBullet();
+                        playerBullet.image = loadImageFromFile("bullet.png");
+                        playerBullet.x = planeX+35-6;
+                        playerBullet.y = planeY-30;
+                        playerBullet.speed=10;
+                        playerBulletList.add(playerBullet);
+
+                        break;
                     case KeyEvent.VK_RIGHT:
                         if (planeX + SPEED > frameWidthSize - 70) ;
                         else
@@ -109,20 +131,46 @@ public class GameWindow extends Frame {
         });
 
         backBufferedImage = new BufferedImage(frameWidthSize, frameHeightSize, BufferedImage.TYPE_INT_ARGB);
-        backGraphics=backBufferedImage.getGraphics();
+        backGraphics = backBufferedImage.getGraphics();
 
     }
-    public void start(){
+
+    public void start() {
         thread.start();
     }
+
     @Override
     public void update(Graphics graphics) {
-        if(backBufferedImage!=null)
-        {
-            backGraphics= backBufferedImage.getGraphics();
+        if (backBufferedImage != null) {
+            backGraphics = backBufferedImage.getGraphics();
             backGraphics.drawImage(backgroundImage, 0, 0, frameWidthSize, frameHeightSize, null);
             backGraphics.drawImage(planeImage, planeX, planeY, 70, 50, null);
-            graphics.drawImage(backBufferedImage,0,0,null);
+            backGraphics.drawImage(enemyPlaneImage, enemyPlaneX, enemyPlaneY, 32, 32, null);
+            for(PlayerBullet temp: playerBulletList)
+            {
+
+                    backGraphics.drawImage(temp.image, temp.x, temp.y, 13, 30, null);
+                    if(temp.y-temp.speed>0)
+                        temp.y-=temp.speed;
+
+
+            }
+
+
+            if (enemyPlaneY + SPEED / 2 < frameHeightSize)
+                enemyPlaneY += SPEED / 2;
+            else
+                enemyPlaneY = 30;
+//            if(isBulletExist==true)
+//            {
+//                backGraphics.drawImage(bulletImage,bulletX,bulletY,13,33,null);
+//                if(bulletY-10<0)
+//                    isBulletExist=false;
+//                else
+//                    bulletY=bulletY-10;
+//
+//            }
+            graphics.drawImage(backBufferedImage, 0, 0, null);
         }
 
     }
