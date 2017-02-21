@@ -6,6 +6,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -16,6 +17,10 @@ public class GameWindow extends Frame {
     int frameHeightSize = 600;
     int planeX = frameWidthSize / 2 - 35;
     int planeY = frameHeightSize - 50;
+    private int SPEED = 10;
+    private BufferedImage backBufferedImage;
+    Thread thread;
+    private Graphics backGraphics;
 
     public GameWindow() {
         setVisible(true);
@@ -53,32 +58,32 @@ public class GameWindow extends Frame {
                 super.keyPressed(keyEvent);
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_RIGHT:
-                        if (planeX + 10 > frameWidthSize - 70) ;
+                        if (planeX + SPEED > frameWidthSize - 70) ;
                         else
-                            planeX += 10;
-                        
-                        update(getGraphics());
+                            planeX += SPEED;
+
+
                         break;
                     case KeyEvent.VK_LEFT:
-                        if (planeX - 10 < 0) ;
+                        if (planeX - SPEED < 0) ;
                         else
-                            planeX -= 10;
+                            planeX -= SPEED;
 
-                        update(getGraphics());
+
                         break;
                     case KeyEvent.VK_UP:
-                        if (planeY - 10 < 30) ;
+                        if (planeY - SPEED < 30) ;
                         else
-                            planeY -= 10;
+                            planeY -= SPEED;
 
-                        update(getGraphics());
+
                         break;
                     case KeyEvent.VK_DOWN:
-                        if (planeY + 10 > frameHeightSize - 50) ;
+                        if (planeY + SPEED > frameHeightSize - 50) ;
                         else
-                            planeY += 10;
+                            planeY += SPEED;
 
-                        update(getGraphics());
+
                         break;
                 }
             }
@@ -88,12 +93,38 @@ public class GameWindow extends Frame {
                 super.keyReleased(keyEvent);
             }
         });
-    }
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(17);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    repaint();
+                }
+            }
 
+        });
+
+        backBufferedImage = new BufferedImage(frameWidthSize, frameHeightSize, BufferedImage.TYPE_INT_ARGB);
+        backGraphics=backBufferedImage.getGraphics();
+
+    }
+    public void start(){
+        thread.start();
+    }
     @Override
     public void update(Graphics graphics) {
-        graphics.drawImage(backgroundImage, 0, 0, frameWidthSize, frameHeightSize, null);
-        graphics.drawImage(planeImage, planeX, planeY, 70, 50, null);
+        if(backBufferedImage!=null)
+        {
+            backGraphics= backBufferedImage.getGraphics();
+            backGraphics.drawImage(backgroundImage, 0, 0, frameWidthSize, frameHeightSize, null);
+            backGraphics.drawImage(planeImage, planeX, planeY, 70, 50, null);
+            graphics.drawImage(backBufferedImage,0,0,null);
+        }
+
     }
 
     private Image loadImageFromFile(String url) {
