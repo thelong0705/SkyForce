@@ -23,5 +23,7 @@ public class BackGround {
     public void moveDown()
     {
         y+=speed;
+        if(y>GameWindow.frameHeightSize)
+            y=-GameWindow.frameHeightSize;
     }
 }

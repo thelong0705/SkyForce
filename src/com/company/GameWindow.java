@@ -11,17 +11,27 @@ import java.io.File;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GameWindow extends Frame {
     //Image backgroundImage;
-    public static int frameWidthSize = 400;
-    public static int frameHeightSize = 600;
+    public static final int frameWidthSize = 400;
+    public static final int frameHeightSize = 600;
+    public static final int BACKGROUNDSPEED = 1;
+    public static final int PLAYERPLANESPEED = 10;
+    public static final int ENEMYPLANESPEED = 5;
+    public static final int PLAYERBULLETSPEED = 10;
+    public static final int ENEMYBULLETSPEED = 10;
     BackGround backgroundImage;
     BackGround backgroundImage2;
     PlayerPlane playerPlane;
     EnemyPlane enemyPlaneDown;
     EnemyPlane enemyPlaneCross1;
     EnemyPlane enemyPlaneCross2;
+    Island island1;
+    Island island2;
+    EnemyBullet enemyBullet;
+    ArrayList<EnemyBullet> enemyBulletList= new ArrayList<EnemyBullet>();
     private BufferedImage backBufferedImage;
     Thread thread;
     private Graphics backGraphics;
@@ -31,10 +41,13 @@ public class GameWindow extends Frame {
     public GameWindow() {
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
-        playerPlane = new PlayerPlane(70, 50, "plane3.png", 10);
-        enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 32 / 2, 30,
-                32, 32, "enemy_plane_white_2.png", 5);
-        enemyPlaneCross1 = new EnemyPlane(0, 0, 32, 32, "enemy_plane_white_3.png", 5);
+        playerPlane = new PlayerPlane(70, 50, "plane3.png", PLAYERPLANESPEED);
+        enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 32 / 2, 0,
+                 "enemy_plane_white_3.png", ENEMYPLANESPEED);
+
+        enemyPlaneCross1 = new EnemyPlane(0, 0, "enemy_plane_white_3.png", ENEMYPLANESPEED);
+        island1 = new Island("island.png", 200, 200, BACKGROUNDSPEED);
+        island2 = new Island("island-2.png", 50, 400, BACKGROUNDSPEED);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
@@ -48,8 +61,10 @@ public class GameWindow extends Frame {
                 System.exit(0);
             }
         });
-        backgroundImage = new BackGround("background.png", 0, 0, 10, frameWidthSize, frameHeightSize);
-        backgroundImage2 = new BackGround("background.png", 0, -frameHeightSize, backgroundImage.speed, frameWidthSize, frameHeightSize);
+        backgroundImage = new BackGround("background.png", 0, 0,
+                BACKGROUNDSPEED, frameWidthSize, frameHeightSize);
+        backgroundImage2 = new BackGround("background.png", 0, -frameHeightSize,
+                BACKGROUNDSPEED, frameWidthSize, frameHeightSize);
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
@@ -62,7 +77,7 @@ public class GameWindow extends Frame {
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
                         PlayerBullet playerBullet = new PlayerBullet(playerPlane.x, playerPlane.y,
-                                playerPlane.planeWidth, 10, "bullet.png", 13, 32);
+                                playerPlane.planeWidth, PLAYERBULLETSPEED, "bullet.png", 13, 32);
                         playerBulletList.add(playerBullet);
                         break;
                     case KeyEvent.VK_RIGHT:
@@ -115,33 +130,47 @@ public class GameWindow extends Frame {
                     backgroundImage.width, backgroundImage.height, null);
             backGraphics.drawImage(backgroundImage2.image, backgroundImage2.x, backgroundImage2.y,
                     backgroundImage2.width, backgroundImage2.height, null);
+            backGraphics.drawImage(island2.image, island2.x, island2.y, null);
+            backGraphics.drawImage(island1.image, island1.x, island1.y, null);
             backGraphics.drawImage(playerPlane.image, playerPlane.x, playerPlane.y,
                     playerPlane.planeWidth, playerPlane.planeHeight, null);
             backGraphics.drawImage(enemyPlaneDown.image, enemyPlaneDown.x, enemyPlaneDown.y,
                     enemyPlaneDown.planeWidth, enemyPlaneDown.planeHeight, null);
             backGraphics.drawImage(enemyPlaneCross1.image, enemyPlaneCross1.x, enemyPlaneCross1.y,
                     enemyPlaneCross1.planeWidth, enemyPlaneCross1.planeHeight, null);
+            if(enemyPlaneDown.y>frameHeightSize)
+            {
+                int randomX= ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+                enemyPlaneDown= new EnemyPlane(randomX,0,"enemy_plane_white_3.png",ENEMYPLANESPEED);
+            }
+            if (enemyPlaneDown.y == 0) {
+                enemyBullet = new EnemyBullet("enemy_bullet.png", ENEMYBULLETSPEED,
+                        enemyPlaneDown.image, enemyPlaneDown.x, enemyPlaneDown.y);
+                enemyBulletList.add(enemyBullet);
+            }
+            if(enemyPlaneCross1.x%100==0)
+            {
+                enemyBullet = new EnemyBullet("enemy_bullet.png", ENEMYBULLETSPEED/2,
+                        enemyPlaneCross1.image, enemyPlaneCross1.x, enemyPlaneCross1.y);
+                enemyBulletList.add(enemyBullet);
+            }
+            for(EnemyBullet temp:enemyBulletList)
+            {
+                backGraphics.drawImage(temp.image, temp.x, temp.y, null);
+                temp.moveDown();
+            }
+
             enemyPlaneDown.moveDown();
             enemyPlaneCross1.moveCrossToRight();
-            if (enemyPlaneDown.y > frameHeightSize) {
-                enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 16, 30,
-                        32, 32, "enemy_plane_white_2.png", 5);
-            }
-            if (enemyPlaneCross1.x > frameWidthSize)
-                enemyPlaneCross1 = new EnemyPlane(0, 0, 32, 32, "enemy_plane_white_3.png", 5);
             for (PlayerBullet temp : playerBulletList) {
 
                 backGraphics.drawImage(temp.image, temp.x, temp.y, temp.bulletWidth, temp.bulletHeight, null);
                 temp.moveUp();
             }
-            if (backgroundImage.y > frameHeightSize) {
-                backgroundImage = new BackGround("background.png", 0, -frameHeightSize, 10, frameWidthSize, frameHeightSize);
-            }
-            if (backgroundImage2.y > frameHeightSize) {
-                backgroundImage2 = new BackGround("background.png", 0, -frameHeightSize, 10, frameWidthSize, frameHeightSize);
-            }
             backgroundImage.moveDown();
             backgroundImage2.moveDown();
+            island1.moveDown();
+            island2.moveDown();
             graphics.drawImage(backBufferedImage, 0, 0, null);
         }
 

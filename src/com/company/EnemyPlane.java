@@ -13,14 +13,14 @@ public class EnemyPlane {
     public int planeWidth;
     public int planeHeight;
 
-    public EnemyPlane(int x, int y, int Width, int Height, String Name, int speed) {
+    public EnemyPlane(int x, int y, String Name, int speed) {
         this.x = x;
         this.y = y;
-        planeWidth = Width;
-        planeHeight = Height;
-//        x = GameWindow.frameWidthSize / 2 - planeWidth / 2;
-//        y = GameWindow.frameHeightSize - planeWidth;
+
+
         image = GameWindow.loadImageFromFile(Name);
+        planeWidth = image.getWidth(null);
+        planeHeight = image.getHeight(null);
         this.speed = speed;
     }
 
@@ -32,6 +32,8 @@ public class EnemyPlane {
     public void moveDown() {
 
         y += speed;
+//        if(y>GameWindow.frameHeightSize)
+//            y=0;
     }
 
     public void moveLeft() {
@@ -46,5 +48,9 @@ public class EnemyPlane {
     public void moveCrossToRight(){
         x+=speed;
         y=x+x/2;
+        if(x>GameWindow.frameWidthSize&&y>GameWindow.frameHeightSize)
+        {
+            x=y=0;
+        }
     }
 }
