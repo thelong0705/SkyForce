@@ -13,10 +13,11 @@ import java.util.*;
 import java.util.List;
 
 public class GameWindow extends Frame {
-    Image backgroundImage;
+    //Image backgroundImage;
     public static int frameWidthSize = 400;
     public static int frameHeightSize = 600;
-
+    BackGround backgroundImage;
+    BackGround backgroundImage2;
     PlayerPlane playerPlane;
     EnemyPlane enemyPlaneDown;
     EnemyPlane enemyPlaneCross1;
@@ -31,7 +32,7 @@ public class GameWindow extends Frame {
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
         playerPlane = new PlayerPlane(70, 50, "plane3.png", 10);
-        enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 16, 30,
+        enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 32 / 2, 30,
                 32, 32, "enemy_plane_white_2.png", 5);
         enemyPlaneCross1 = new EnemyPlane(0, 0, 32, 32, "enemy_plane_white_3.png", 5);
         addWindowListener(new WindowAdapter() {
@@ -47,7 +48,8 @@ public class GameWindow extends Frame {
                 System.exit(0);
             }
         });
-        backgroundImage = loadImageFromFile("background.png");
+        backgroundImage = new BackGround("background.png", 0, 0, 10, frameWidthSize, frameHeightSize);
+        backgroundImage2 = new BackGround("background.png", 0, -frameHeightSize, backgroundImage.speed, frameWidthSize, frameHeightSize);
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
@@ -109,7 +111,10 @@ public class GameWindow extends Frame {
     public void update(Graphics graphics) {
         if (backBufferedImage != null) {
             backGraphics = backBufferedImage.getGraphics();
-            backGraphics.drawImage(backgroundImage, 0, 0, frameWidthSize, frameHeightSize, null);
+            backGraphics.drawImage(backgroundImage.image, backgroundImage.x, backgroundImage.y,
+                    backgroundImage.width, backgroundImage.height, null);
+            backGraphics.drawImage(backgroundImage2.image, backgroundImage2.x, backgroundImage2.y,
+                    backgroundImage2.width, backgroundImage2.height, null);
             backGraphics.drawImage(playerPlane.image, playerPlane.x, playerPlane.y,
                     playerPlane.planeWidth, playerPlane.planeHeight, null);
             backGraphics.drawImage(enemyPlaneDown.image, enemyPlaneDown.x, enemyPlaneDown.y,
@@ -129,7 +134,14 @@ public class GameWindow extends Frame {
                 backGraphics.drawImage(temp.image, temp.x, temp.y, temp.bulletWidth, temp.bulletHeight, null);
                 temp.moveUp();
             }
-
+            if (backgroundImage.y > frameHeightSize) {
+                backgroundImage = new BackGround("background.png", 0, -frameHeightSize, 10, frameWidthSize, frameHeightSize);
+            }
+            if (backgroundImage2.y > frameHeightSize) {
+                backgroundImage2 = new BackGround("background.png", 0, -frameHeightSize, 10, frameWidthSize, frameHeightSize);
+            }
+            backgroundImage.moveDown();
+            backgroundImage2.moveDown();
             graphics.drawImage(backBufferedImage, 0, 0, null);
         }
 
