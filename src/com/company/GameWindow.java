@@ -31,9 +31,9 @@ public class GameWindow extends Frame {
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
         playerPlane = new PlayerPlane(70, 50, "plane3.png", 10);
-        enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 16,30,
-                32,32,"enemy_plane_white_2.png",5);
-        enemyPlaneCross1= new EnemyPlane(0,0,32,32,"enemy_plane_white_3.png",5);
+        enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 16, 30,
+                32, 32, "enemy_plane_white_2.png", 5);
+        enemyPlaneCross1 = new EnemyPlane(0, 0, 32, 32, "enemy_plane_white_3.png", 5);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
@@ -58,15 +58,11 @@ public class GameWindow extends Frame {
             public void keyPressed(KeyEvent keyEvent) {
                 super.keyPressed(keyEvent);
                 switch (keyEvent.getKeyCode()) {
-//                    case KeyEvent.VK_SPACE:
-//                        PlayerBullet playerBullet = new PlayerBullet();
-//                        playerBullet.image = loadImageFromFile("bullet.png");
-//                        playerBullet.x = planeX + 35 - 6;
-//                        playerBullet.y = planeY - 30;
-//                        playerBullet.speed = 10;
-//                        playerBulletList.add(playerBullet);
-//
-//                        break;
+                    case KeyEvent.VK_SPACE:
+                        PlayerBullet playerBullet = new PlayerBullet(playerPlane.x, playerPlane.y,
+                                playerPlane.planeWidth, 10, "bullet.png", 13, 32);
+                        playerBulletList.add(playerBullet);
+                        break;
                     case KeyEvent.VK_RIGHT:
                         playerPlane.moveRight();
                         break;
@@ -116,41 +112,24 @@ public class GameWindow extends Frame {
             backGraphics.drawImage(backgroundImage, 0, 0, frameWidthSize, frameHeightSize, null);
             backGraphics.drawImage(playerPlane.image, playerPlane.x, playerPlane.y,
                     playerPlane.planeWidth, playerPlane.planeHeight, null);
-            backGraphics.drawImage(enemyPlaneDown.image,enemyPlaneDown.x,enemyPlaneDown.y,
-                    enemyPlaneDown.planeWidth,enemyPlaneDown.planeHeight,null);
-            backGraphics.drawImage(enemyPlaneCross1.image,enemyPlaneCross1.x,enemyPlaneCross1.y,
-                    enemyPlaneCross1.planeWidth,enemyPlaneCross1.planeHeight,null);
+            backGraphics.drawImage(enemyPlaneDown.image, enemyPlaneDown.x, enemyPlaneDown.y,
+                    enemyPlaneDown.planeWidth, enemyPlaneDown.planeHeight, null);
+            backGraphics.drawImage(enemyPlaneCross1.image, enemyPlaneCross1.x, enemyPlaneCross1.y,
+                    enemyPlaneCross1.planeWidth, enemyPlaneCross1.planeHeight, null);
             enemyPlaneDown.moveDown();
             enemyPlaneCross1.moveCrossToRight();
-            if(enemyPlaneDown.y>frameHeightSize) {
+            if (enemyPlaneDown.y > frameHeightSize) {
                 enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 16, 30,
                         32, 32, "enemy_plane_white_2.png", 5);
             }
-            if(enemyPlaneCross1.x>frameWidthSize)
-                enemyPlaneCross1=new EnemyPlane(0,0,32,32,"enemy_plane_white_3.png",5);
-//            for (PlayerBullet temp : playerBulletList) {
-//
-//                backGraphics.drawImage(temp.image, temp.x, temp.y, 13, 30, null);
-//                if (temp.y - temp.speed > 0)
-//                    temp.y -= temp.speed;
-//
-//
-//            }
-//
-//
-//            if (enemyPlaneY + SPEED / 2 < frameHeightSize)
-//                enemyPlaneY += SPEED / 2;
-//            else
-//                enemyPlaneY = 30;
-//            if(isBulletExist==true)
-//            {
-//                backGraphics.drawImage(bulletImage,bulletX,bulletY,13,33,null);
-//                if(bulletY-10<0)
-//                    isBulletExist=false;
-//                else
-//                    bulletY=bulletY-10;
-//
-//            }
+            if (enemyPlaneCross1.x > frameWidthSize)
+                enemyPlaneCross1 = new EnemyPlane(0, 0, 32, 32, "enemy_plane_white_3.png", 5);
+            for (PlayerBullet temp : playerBulletList) {
+
+                backGraphics.drawImage(temp.image, temp.x, temp.y, temp.bulletWidth, temp.bulletHeight, null);
+                temp.moveUp();
+            }
+
             graphics.drawImage(backBufferedImage, 0, 0, null);
         }
 
