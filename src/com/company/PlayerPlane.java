@@ -13,12 +13,12 @@ public class PlayerPlane {
     public int planeWidth;
     public int planeHeight;
 
-    public PlayerPlane(int Width, int Height, String Name, int speed) {
-        planeWidth = Width;
-        planeHeight = Height;
-        x = GameWindow.frameWidthSize / 2 - planeWidth/2;
-        y=GameWindow.frameHeightSize - planeWidth;
+    public PlayerPlane(int x, int y,String Name, int speed) {
         image=GameWindow.loadImageFromFile(Name);
+        planeWidth = image.getWidth(null);
+        planeHeight = image.getHeight(null);
+        this.x=x;
+        this.y=y;
         this.speed=speed;
     }
 
@@ -41,5 +41,21 @@ public class PlayerPlane {
     {
         if(x<=GameWindow.frameWidthSize-planeWidth-speed)
             x+=speed;
+    }
+    public void getHitByBullet(EnemyBullet enemyBullet) {
+        int bulletLeftBottomX = enemyBullet.x;
+        int bulletLeftBottomY = enemyBullet.y + enemyBullet.image.getHeight(null);
+        int bulletRightBottomX = enemyBullet.x + enemyBullet.image.getWidth(null);
+        int bulletRightBottomY = bulletLeftBottomY;
+        int playerBottomRightX = x + image.getWidth(null);
+        int playerBottomRightY = y + image.getHeight(null);
+
+        if ((bulletRightBottomX > x && bulletRightBottomX < playerBottomRightX &&
+                bulletRightBottomY > y && bulletRightBottomY < playerBottomRightY)) {
+            image = GameWindow.loadImageFromFile("explosion1.png");
+        } else if ((bulletLeftBottomX > x && bulletLeftBottomX < playerBottomRightX &&
+                bulletLeftBottomY > y && bulletLeftBottomY < playerBottomRightY)) {
+            image = GameWindow.loadImageFromFile("explosion1.png");
+        }
     }
 }

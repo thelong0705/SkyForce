@@ -12,16 +12,15 @@ public class EnemyPlane {
     public Image image;
     public int planeWidth;
     public int planeHeight;
-
+    public int stateOfExplosion;
     public EnemyPlane(int x, int y, String Name, int speed) {
         this.x = x;
         this.y = y;
-
-
         image = GameWindow.loadImageFromFile(Name);
         planeWidth = image.getWidth(null);
         planeHeight = image.getHeight(null);
         this.speed = speed;
+        stateOfExplosion=0;
     }
 
     public void moveUp() {
@@ -53,4 +52,19 @@ public class EnemyPlane {
             x=y=0;
         }
     }
+
+    public boolean getHitByPlayerBullet(PlayerBullet playerBullet)
+    {
+        int bulletCenterX=playerBullet.x+playerBullet.image.getWidth(null)/2;
+        int bulletCenterY=playerBullet.y+playerBullet.image.getHeight(null);
+        if(bulletCenterX>x&&bulletCenterX<x+image.getWidth(null)&&
+                bulletCenterY>y&&bulletCenterY<y+image.getHeight(null))
+        {
+            stateOfExplosion=1;
+            playerBullet.isHit=1;
+            return true;
+        }
+        return false;
+    }
+
 }

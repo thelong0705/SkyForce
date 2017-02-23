@@ -31,7 +31,7 @@ public class GameWindow extends Frame {
     Island island1;
     Island island2;
     EnemyBullet enemyBullet;
-    ArrayList<EnemyBullet> enemyBulletList= new ArrayList<EnemyBullet>();
+    ArrayList<EnemyBullet> enemyBulletList = new ArrayList<EnemyBullet>();
     private BufferedImage backBufferedImage;
     Thread thread;
     private Graphics backGraphics;
@@ -41,11 +41,11 @@ public class GameWindow extends Frame {
     public GameWindow() {
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
-        playerPlane = new PlayerPlane(70, 50, "plane3.png", PLAYERPLANESPEED);
+        playerPlane = new PlayerPlane(frameWidthSize / 2 - 35, frameHeightSize - 50, "plane3.png", PLAYERPLANESPEED);
         enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 32 / 2, 0,
-                 "enemy_plane_white_3.png", ENEMYPLANESPEED);
+                "enemy_plane_white_3.png", ENEMYPLANESPEED);
 
-        enemyPlaneCross1 = new EnemyPlane(0, 0, "enemy_plane_white_3.png", ENEMYPLANESPEED);
+        enemyPlaneCross1 = new EnemyPlane(0, 0, "enemy-green-1.png", ENEMYPLANESPEED);
         island1 = new Island("island.png", 200, 200, BACKGROUNDSPEED);
         island2 = new Island("island-2.png", 50, 400, BACKGROUNDSPEED);
         addWindowListener(new WindowAdapter() {
@@ -124,6 +124,20 @@ public class GameWindow extends Frame {
 
     @Override
     public void update(Graphics graphics) {
+        if (enemyPlaneDown.y > frameHeightSize) {
+            int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+            enemyPlaneDown = new EnemyPlane(randomX, 0, "enemy_plane_white_3.png", ENEMYPLANESPEED);
+        }
+        if (enemyPlaneDown.y == 0) {
+            enemyBullet = new EnemyBullet("enemy_bullet.png", ENEMYBULLETSPEED,
+                    enemyPlaneDown.image, enemyPlaneDown.x, enemyPlaneDown.y);
+            enemyBulletList.add(enemyBullet);
+        }
+        if (enemyPlaneCross1.x % 100 == 0) {
+            enemyBullet = new EnemyBullet("enemy_bullet.png", ENEMYBULLETSPEED / 2,
+                    enemyPlaneCross1.image, enemyPlaneCross1.x, enemyPlaneCross1.y);
+            enemyBulletList.add(enemyBullet);
+        }
         if (backBufferedImage != null) {
             backGraphics = backBufferedImage.getGraphics();
             backGraphics.drawImage(backgroundImage.image, backgroundImage.x, backgroundImage.y,
@@ -133,40 +147,41 @@ public class GameWindow extends Frame {
             backGraphics.drawImage(island2.image, island2.x, island2.y, null);
             backGraphics.drawImage(island1.image, island1.x, island1.y, null);
             backGraphics.drawImage(playerPlane.image, playerPlane.x, playerPlane.y,
-                    playerPlane.planeWidth, playerPlane.planeHeight, null);
+                    playerPlane.image.getWidth(null), playerPlane.image.getHeight(null), null);
             backGraphics.drawImage(enemyPlaneDown.image, enemyPlaneDown.x, enemyPlaneDown.y,
                     enemyPlaneDown.planeWidth, enemyPlaneDown.planeHeight, null);
             backGraphics.drawImage(enemyPlaneCross1.image, enemyPlaneCross1.x, enemyPlaneCross1.y,
                     enemyPlaneCross1.planeWidth, enemyPlaneCross1.planeHeight, null);
-            if(enemyPlaneDown.y>frameHeightSize)
-            {
-                int randomX= ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-                enemyPlaneDown= new EnemyPlane(randomX,0,"enemy_plane_white_3.png",ENEMYPLANESPEED);
-            }
-            if (enemyPlaneDown.y == 0) {
-                enemyBullet = new EnemyBullet("enemy_bullet.png", ENEMYBULLETSPEED,
-                        enemyPlaneDown.image, enemyPlaneDown.x, enemyPlaneDown.y);
-                enemyBulletList.add(enemyBullet);
-            }
-            if(enemyPlaneCross1.x%100==0)
-            {
-                enemyBullet = new EnemyBullet("enemy_bullet.png", ENEMYBULLETSPEED/2,
-                        enemyPlaneCross1.image, enemyPlaneCross1.x, enemyPlaneCross1.y);
-                enemyBulletList.add(enemyBullet);
-            }
-            for(EnemyBullet temp:enemyBulletList)
-            {
+            for (EnemyBullet temp : enemyBulletList) {
                 backGraphics.drawImage(temp.image, temp.x, temp.y, null);
+
                 temp.moveDown();
             }
+            int hitPlaneDownOrCrossPlane=0;
+            Iterator<PlayerBullet> iter = playerBulletList.iterator();
+            while (iter.hasNext()) {
+                PlayerBullet temp = iter.next();
+                if(enemyPlaneDown.getHitByPlayerBullet(temp))
+                {
+                    iter.remove();
+                    int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+                    enemyPlaneDown = new EnemyPlane(randomX, 0,
+                            "enemy_plane_white_3.png", ENEMYPLANESPEED);
+                }
 
+                else if (enemyPlaneCross1.getHitByPlayerBullet(temp)) {
+
+                    iter.remove();
+                    enemyPlaneCross1=new EnemyPlane(0, 0, "enemy-green-1.png", ENEMYPLANESPEED);
+                } else {
+
+                    backGraphics.drawImage(temp.image, temp.x, temp.y, temp.bulletWidth, temp.bulletHeight, null);
+                    temp.moveUp();
+                }
+
+            }
             enemyPlaneDown.moveDown();
             enemyPlaneCross1.moveCrossToRight();
-            for (PlayerBullet temp : playerBulletList) {
-
-                backGraphics.drawImage(temp.image, temp.x, temp.y, temp.bulletWidth, temp.bulletHeight, null);
-                temp.moveUp();
-            }
             backgroundImage.moveDown();
             backgroundImage2.moveDown();
             island1.moveDown();
