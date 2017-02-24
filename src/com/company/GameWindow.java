@@ -31,9 +31,11 @@ public class GameWindow extends Frame {
     Island island1;
     Island island2;
     EnemyBullet enemyBullet;
+    PowerUp powerUp;
     ArrayList<EnemyBullet> enemyBulletList = new ArrayList<EnemyBullet>();
     private BufferedImage backBufferedImage;
     Thread thread;
+    Thread thread1;
     private Graphics backGraphics;
     //PlayerBullet playerBullet;
     ArrayList<PlayerBullet> playerBulletList = new ArrayList<PlayerBullet>();
@@ -109,10 +111,27 @@ public class GameWindow extends Frame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
                     repaint();
                 }
             }
 
+        });
+        thread1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize-50);
+                    int randomY=    ThreadLocalRandom.current().nextInt(50, 200);
+                    powerUp= new PowerUp("power-up.png",randomX,randomY,3);
+                }
+            }
         });
         backBufferedImage = new BufferedImage(frameWidthSize, frameHeightSize, BufferedImage.TYPE_INT_ARGB);
         backGraphics = backBufferedImage.getGraphics();
@@ -120,10 +139,12 @@ public class GameWindow extends Frame {
 
     public void start() {
         thread.start();
+        thread1.start();
     }
 
     @Override
     public void update(Graphics graphics) {
+
         if (enemyPlaneDown.y > frameHeightSize) {
             int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
             enemyPlaneDown = new EnemyPlane(randomX, 0, "enemy_plane_white_3.png", ENEMYPLANESPEED);
@@ -157,29 +178,34 @@ public class GameWindow extends Frame {
 
                 temp.moveDown();
             }
-            int hitPlaneDownOrCrossPlane=0;
+
             Iterator<PlayerBullet> iter = playerBulletList.iterator();
             while (iter.hasNext()) {
                 PlayerBullet temp = iter.next();
-                if(enemyPlaneDown.getHitByPlayerBullet(temp))
-                {
+                if (enemyPlaneDown.getHitByPlayerBullet(temp)) {
                     iter.remove();
                     int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+
                     enemyPlaneDown = new EnemyPlane(randomX, 0,
                             "enemy_plane_white_3.png", ENEMYPLANESPEED);
-                }
-
-                else if (enemyPlaneCross1.getHitByPlayerBullet(temp)) {
+                } else if (enemyPlaneCross1.getHitByPlayerBullet(temp)) {
 
                     iter.remove();
-                    enemyPlaneCross1=new EnemyPlane(0, 0, "enemy-green-1.png", ENEMYPLANESPEED);
+                    enemyPlaneCross1 = new EnemyPlane(0, 0, "enemy-green-1.png", ENEMYPLANESPEED);
                 } else {
 
                     backGraphics.drawImage(temp.image, temp.x, temp.y, temp.bulletWidth, temp.bulletHeight, null);
                     temp.moveUp();
                 }
-
             }
+            if(powerUp!=null)
+            {
+                backGraphics.drawImage(powerUp.image,powerUp.x,powerUp.y,null);
+                powerUp.moveDown();
+                if(powerUp.y>frameHeightSize)
+                    powerUp=null;
+            }
+
             enemyPlaneDown.moveDown();
             enemyPlaneCross1.moveCrossToRight();
             backgroundImage.moveDown();
