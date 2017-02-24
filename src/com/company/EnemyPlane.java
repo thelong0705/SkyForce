@@ -71,7 +71,7 @@ public class EnemyPlane {
     {
         if(stateOfExplosion<=6) {
             image = GameWindow.loadImageFromFile("explosion" + stateOfExplosion + ".png");
-            
+
         }
         stateOfExplosion++;
 

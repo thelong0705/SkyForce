@@ -7,7 +7,6 @@
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/EnemyPlane.java" afterPath="$PROJECT_DIR$/src/com/company/EnemyPlane.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/GameWindow.java" afterPath="$PROJECT_DIR$/src/com/company/GameWindow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/Main.java" afterPath="$PROJECT_DIR$/src/com/company/Main.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -23,11 +22,11 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GameWindow.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GameWindow.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/GameWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="148" column="93" lean-forward="true" selection-start-line="148" selection-start-column="11" selection-end-line="148" selection-end-column="93" />
+            <state relative-caret-position="255">
+              <caret line="187" column="59" lean-forward="false" selection-start-line="187" selection-start-column="59" selection-end-line="187" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="class#2010:2402" expanded="false" />
@@ -48,11 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="EnemyPlane.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="EnemyPlane.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/company/EnemyPlane.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="73" column="12" lean-forward="false" selection-start-line="73" selection-start-column="12" selection-end-line="73" selection-end-column="12" />
+            <state relative-caret-position="1153">
+              <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -92,9 +91,9 @@
         <option value="$PROJECT_DIR$/src/com/company/PlayerPlane.java" />
         <option value="$PROJECT_DIR$/src/com/company/PlayerBullet.java" />
         <option value="$PROJECT_DIR$/src/com/company/PowerUp.java" />
-        <option value="$PROJECT_DIR$/src/com/company/GameWindow.java" />
         <option value="$PROJECT_DIR$/src/com/company/Main.java" />
         <option value="$PROJECT_DIR$/src/com/company/EnemyPlane.java" />
+        <option value="$PROJECT_DIR$/src/com/company/GameWindow.java" />
       </list>
     </option>
   </component>
@@ -771,6 +770,14 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/company/EnemyPlane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1153">
+          <caret line="73" column="0" lean-forward="false" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/Main.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
@@ -781,22 +788,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/GameWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="148" column="93" lean-forward="true" selection-start-line="148" selection-start-column="11" selection-end-line="148" selection-end-column="93" />
+        <state relative-caret-position="255">
+          <caret line="187" column="59" lean-forward="false" selection-start-line="187" selection-start-column="59" selection-end-line="187" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="class#2010:2402" expanded="false" />
             <element signature="method#windowClosing#0;class#2010:2402" expanded="false" />
             <element signature="method#windowClosed#0;class#2010:2402" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/company/EnemyPlane.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="73" column="12" lean-forward="false" selection-start-line="73" selection-start-column="12" selection-end-line="73" selection-end-column="12" />
-          <folding />
         </state>
       </provider>
     </entry>
