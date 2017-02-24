@@ -67,12 +67,13 @@ public class EnemyPlane {
         return false;
     }
 
-//    public void enemyBlowUp()
-//    {
-//        if(stateOfExplosion<=6)
-//            image=GameWindow.loadImageFromFile("explosion"+stateOfExplosion+".png");
-//        System.out.println(stateOfExplosion);
-//        stateOfExplosion++;
-//
-//    }
+   public void enemyBlowUp()
+    {
+        if(stateOfExplosion<=6) {
+            image = GameWindow.loadImageFromFile("explosion" + stateOfExplosion + ".png");
+            
+        }
+        stateOfExplosion++;
+
+    }
 }

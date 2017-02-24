@@ -19,7 +19,7 @@ public class GameWindow extends Frame {
     public static final int frameHeightSize = 600;
     public static final int BACKGROUNDSPEED = 1;
     public static final int PLAYERPLANESPEED = 10;
-    public static final int ENEMYPLANESPEED = 5;
+    public static final int ENEMYPLANESPEED = 2;
     public static final int PLAYERBULLETSPEED = 10;
     public static final int ENEMYBULLETSPEED = 10;
     BackGround backgroundImage;
@@ -27,7 +27,7 @@ public class GameWindow extends Frame {
     PlayerPlane playerPlane;
     EnemyPlane enemyPlaneDown;
     EnemyPlane enemyPlaneCross1;
-    EnemyPlane enemyPlaneCross2;
+    EnemyPlane enemyForExplosion;
     Island island1;
     Island island2;
     EnemyBullet enemyBullet;
@@ -175,7 +175,6 @@ public class GameWindow extends Frame {
                     enemyPlaneCross1.planeWidth, enemyPlaneCross1.planeHeight, null);
             for (EnemyBullet temp : enemyBulletList) {
                 backGraphics.drawImage(temp.image, temp.x, temp.y, null);
-
                 temp.moveDown();
             }
 
@@ -185,18 +184,25 @@ public class GameWindow extends Frame {
                 if (enemyPlaneDown.getHitByPlayerBullet(temp)) {
                     iter.remove();
                     int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-
-                    enemyPlaneDown = new EnemyPlane(randomX, 0,
+                    enemyForExplosion=enemyPlaneDown;
+                    enemyPlaneDown = new EnemyPlane(50, 0,
                             "enemy_plane_white_3.png", ENEMYPLANESPEED);
                 } else if (enemyPlaneCross1.getHitByPlayerBullet(temp)) {
-
                     iter.remove();
+                    enemyForExplosion=enemyPlaneCross1;
                     enemyPlaneCross1 = new EnemyPlane(0, 0, "enemy-green-1.png", ENEMYPLANESPEED);
                 } else {
-
                     backGraphics.drawImage(temp.image, temp.x, temp.y, temp.bulletWidth, temp.bulletHeight, null);
                     temp.moveUp();
                 }
+
+            }
+            if(enemyForExplosion!=null)
+            {
+                enemyForExplosion.enemyBlowUp();
+                backGraphics.drawImage(enemyForExplosion.image,enemyForExplosion.x,enemyForExplosion.y,null);
+                if(enemyForExplosion.stateOfExplosion>6)
+                    enemyForExplosion=null;
             }
             if(powerUp!=null)
             {
