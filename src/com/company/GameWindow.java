@@ -185,7 +185,7 @@ public class GameWindow extends Frame {
                     iter.remove();
                     int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
                     enemyForExplosion=enemyPlaneDown;
-                    enemyPlaneDown = new EnemyPlane(randomX, 0,
+                    enemyPlaneDown = new EnemyPlane(randomX , 0,
                             "enemy_plane_white_3.png", ENEMYPLANESPEED);
                 } else if (enemyPlaneCross1.getHitByPlayerBullet(temp)) {
                     iter.remove();
