@@ -3,16 +3,16 @@ package models;
 import com.company.GameWindow;
 
 /**
- * Created by Inpriron on 2/26/2017.
+ * Created by Inpriron on 2/27/2017.
  */
-public class PlayerBulletModel {
-    private static final int SPEED = GameWindow.PLAYERBULLETSPEED;
+public class EnemyBulletModel {
+    private static final int SPEED = GameWindow.ENEMYBULLETSPEED;
     private int x;
     private int y;
     private int width;
     private int height;
 
-    public PlayerBulletModel(int x, int y, int width, int height) {
+    public EnemyBulletModel(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -37,6 +37,6 @@ public class PlayerBulletModel {
 
     public void fly()
     {
-        y-=SPEED;
+        y+=SPEED;
     }
 }

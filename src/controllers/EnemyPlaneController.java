@@ -8,18 +8,28 @@ import views.EnemyPlaneView;
 import views.PlayerBulletView;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * Created by Inpriron on 2/27/2017.
  */
 public class EnemyPlaneController {
 
-    private EnemyPlaneModel model;
-    private EnemyPlaneView view;
+           private EnemyPlaneModel model;
+        private EnemyPlaneView view;
+
+    public EnemyPlaneModel getModel() {
+        return model;
+    }
+
+    public EnemyPlaneView getView() {
+        return view;
+    }
 
     public EnemyPlaneController(EnemyPlaneModel model, EnemyPlaneView view) {
         this.model = model;
         this.view = view;
+
     }
 
     public EnemyPlaneController(int x, int y, Image image) {
@@ -48,5 +58,14 @@ public class EnemyPlaneController {
     }
     public void moveCrossToRight(){
         model.moveCrossToRight();
+    }
+
+    public ArrayList<EnemyBulletController> shootBullet(ArrayList<EnemyBulletController> enemyBulletControllerList) {
+        EnemyBulletController enemyBulletController
+                = new EnemyBulletController(
+                model.getX() + (GameWindow.ENEMYPLANEWIDTH - GameWindow.ENEMYBULLETWIDTH) / 2,
+                model.getY() + GameWindow.ENEMYPLANEHEIGHT);
+        enemyBulletControllerList.add(enemyBulletController);
+        return enemyBulletControllerList;
     }
 }

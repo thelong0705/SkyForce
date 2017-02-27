@@ -1,5 +1,6 @@
 package com.company;
 
+import controllers.EnemyBulletController;
 import controllers.EnemyPlaneController;
 import controllers.PlayerBulletController;
 import controllers.PlayerPlaneController;
@@ -26,7 +27,7 @@ public class GameWindow extends Frame {
     public static final int BACKGROUNDSPEED = 1;
     public static final int PLAYERPLANESPEED = 10;
     public static final int ENEMYPLANESPEED = 2;
-    public static final int PLAYERBULLETSPEED = 10;
+    public static final int PLAYERBULLETSPEED = 5;
     public static final int ENEMYBULLETSPEED = 10;
     public static final int PLANEWIDTH = 70;
     public static final int PLANEHEIGHT = 50;
@@ -34,42 +35,32 @@ public class GameWindow extends Frame {
     public static final int PLAYERBULLETHEIGHT = 30;
     public static final int ENEMYPLANEWIDTH = 32;
     public static final int ENEMYPLANEHEIGHT = 32;
-    public static final int CYCLEBETWEENENEMYAPPEEAR=60;
+    public static final int CYCLEBETWEENENEMYAPPEEAR = 60;
+    public static final int ENEMYBULLETWIDTH = 9;
+    public static final int ENEMYBULLETHEIGHT = 9;
     private BackGround backgroundImage;
     private BackGround backgroundImage2;
-    //    PlayerPlane playerPlane;
-//    EnemyPlane enemyPlaneDown;
-//    EnemyPlane enemyPlaneCross1;
-//    EnemyPlane enemyForExplosion;
     Island island1;
     Island island2;
     EnemyBullet enemyBullet;
     PowerUp powerUp;
-    ArrayList<EnemyBullet> enemyBulletList = new ArrayList<EnemyBullet>();
+    ArrayList<EnemyBulletController> enemyBulletControllerList = new ArrayList<EnemyBulletController>();
     private BufferedImage backBufferedImage;
     Thread thread;
     Thread thread1;
     private Graphics backGraphics;
     private PlayerPlaneController playerPlaneController;
-    //PlayerBullet playerBullet;
-    //ArrayList<PlayerBullet> playerBulletList = new ArrayList<PlayerBullet>();
     ArrayList<EnemyPlaneController> enemyPlaneControllerList = new ArrayList<EnemyPlaneController>();
     ArrayList<PlayerBulletController> playerBulletList = new ArrayList<PlayerBulletController>();
+    ArrayList<EnemyPlaneController> enemyPlaneExplosionList = new ArrayList<EnemyPlaneController>();
 
     public GameWindow() {
 
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
-        //PlayerBulletModel model= new PlayerBulletModel(300,300,13,30);
-        //PlayerBulletView view= new PlayerBulletView(Utils.loadImageFromFile("bullet.png"));
-        //playerBulletController= new PlayerBulletController(model,view);
-//        playerPlane = new PlayerPlane(frameWidthSize / 2 - PLANEWIDTH / 2, frameHeightSize - PLANEHEIGHT,
-//                "plane3.png", PLAYERPLANESPEED);
+
         playerPlaneController = new PlayerPlaneController(frameWidthSize / 2 - PLANEWIDTH / 2, frameHeightSize - PLANEHEIGHT);
-//        enemyPlaneDown = new EnemyPlane(frameWidthSize / 2 - 32 / 2, 0,
-//                "enemy_plane_white_3.png", ENEMYPLANESPEED);
-//
-//        enemyPlaneCross1 = new EnemyPlane(0, 0, "enemy-green-1.png", ENEMYPLANESPEED);
+
         island1 = new Island("island.png", 200, 200, BACKGROUNDSPEED);
         island2 = new Island("island-2.png", 50, 400, BACKGROUNDSPEED);
         addWindowListener(new WindowAdapter() {
@@ -134,6 +125,16 @@ public class GameWindow extends Frame {
                         e.printStackTrace();
                     }
                     repaint();
+                    if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
+                        randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+                        EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
+                                Utils.loadImageFromFile("enemy_plane_white_3.png"));
+                        enemyPlaneControllerList.add(enemyPlaneController);
+
+                    }
+
+                    checkIfEnemyHitByPlayerBullet(enemyPlaneControllerList, playerBulletList);
+
                     Iterator<PlayerBulletController> iter = playerBulletList.iterator();
                     while (iter.hasNext()) {
                         PlayerBulletController temp = iter.next();
@@ -143,20 +144,25 @@ public class GameWindow extends Frame {
                             temp.run();
                         }
                     }
-                    if(cycleCounter%CYCLEBETWEENENEMYAPPEEAR==0)
-                    {
-                        randomX=ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-                        EnemyPlaneController enemyPlaneController= new EnemyPlaneController(randomX,0,
-                                Utils.loadImageFromFile( "enemy_plane_white_3.png"));
-                        enemyPlaneControllerList.add(enemyPlaneController);
-                        System.out.println("where is my plane");
-                    }
-                    Iterator<EnemyPlaneController> iter1 = enemyPlaneControllerList.iterator();
+                    Iterator<EnemyPlaneController> iter1 = enemyPlaneExplosionList.iterator();
                     while (iter1.hasNext()) {
                         EnemyPlaneController temp = iter1.next();
-                        temp.moveDown();
+                        if (temp.getView().getStateOfExplosion() > 6 - 1) //Vi co 6 anh trang thai no
+                            iter1.remove();
                     }
-                    System.out.println(cycleCounter);
+                    Iterator<EnemyBulletController> iter2 = enemyBulletControllerList.iterator();
+                    while (iter2.hasNext()) {
+                        EnemyBulletController temp = iter2.next();
+                        if (temp.getModel().getY() > frameHeightSize)
+                        {
+                            iter2.remove();
+
+                        }
+
+                        else
+                            temp.run();
+                    }
+
                     cycleCounter++;
                 }
             }
@@ -182,6 +188,54 @@ public class GameWindow extends Frame {
         backGraphics = backBufferedImage.getGraphics();
     }
 
+
+
+    private void checkIfEnemyHitByPlayerBullet(ArrayList<EnemyPlaneController> enemyPlaneControllerList,
+                                                ArrayList<PlayerBulletController> playerBulletControllerList) {
+        int bulletCenterX;
+        int bulletCenterY;
+        int enemyX;
+        int enemyY;
+        boolean isHit;
+        Iterator<EnemyPlaneController> iter = enemyPlaneControllerList.iterator();
+        while (iter.hasNext()) {
+            isHit = false;
+            EnemyPlaneController enemyPlane = iter.next();
+            enemyX = enemyPlane.getModel().getX();
+            enemyY = enemyPlane.getModel().getY();
+            Iterator<PlayerBulletController> iter1 = playerBulletControllerList.iterator();
+            while (iter1.hasNext()) {
+                PlayerBulletController playerBullet = iter1.next();
+                bulletCenterX = playerBullet.getModel().getX() + playerBullet.getModel().getWidth() / 2;
+                bulletCenterY = playerBullet.getModel().getY() + playerBullet.getModel().getHeight();
+                if (bulletCenterX > enemyX && bulletCenterX < enemyX + enemyPlane.getModel().getWidth()
+                        && bulletCenterY > enemyY && bulletCenterY < enemyY + enemyPlane.getModel().getHeight()) {
+                    enemyPlaneExplosionList.add(new EnemyPlaneController(enemyX, enemyY, null));
+                    iter.remove();
+                    iter1.remove();
+                    isHit = true;
+                    break;
+                }
+            }
+            if (!isHit) {
+                if(enemyPlane.getModel().getY()<frameHeightSize)
+                {
+                    enemyPlane.moveDown();
+                    if (enemyPlane.getModel().getY() % 200 == 0)
+                        enemyBulletControllerList = enemyPlane.shootBullet(enemyBulletControllerList);
+                }
+                else
+                {
+                    iter.remove();
+              
+                }
+
+
+            }
+
+        }
+    }
+
     public void start() {
         thread.start();
         thread1.start();
@@ -189,79 +243,40 @@ public class GameWindow extends Frame {
 
     @Override
     public void update(Graphics graphics) {
-
-//        if (enemyPlaneDown.getY() > frameHeightSize) {
-//            int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-//            enemyPlaneDown = new EnemyPlane(randomX, 0, "enemy_plane_white_3.png", ENEMYPLANESPEED);
-//        }
-//        if (enemyPlaneDown.getY() == 0) {
-//            enemyBullet = new EnemyBullet("enemy_bullet.png", ENEMYBULLETSPEED,
-//                    enemyPlaneDown.getImage(), enemyPlaneDown.getX(), enemyPlaneDown.getY());
-//            enemyBulletList.add(enemyBullet);
-//        }
-//        if (enemyPlaneCross1.getX() % 100 == 0) {
-//            enemyBullet = new EnemyBullet("enemy_bullet.png", ENEMYBULLETSPEED / 2,
-//                    enemyPlaneCross1.getImage(), enemyPlaneCross1.getX(), enemyPlaneCross1.getY());
-//            enemyBulletList.add(enemyBullet);
-//        }
-
         if (backBufferedImage != null) {
             backGraphics = backBufferedImage.getGraphics();
             backGraphics.drawImage(backgroundImage.getImage(), backgroundImage.getX(), backgroundImage.getY(),
                     backgroundImage.getWidth(), backgroundImage.getHeight(), null);
             backGraphics.drawImage(backgroundImage2.getImage(), backgroundImage2.getX(), backgroundImage2.getY(),
                     backgroundImage2.getWidth(), backgroundImage2.getHeight(), null);
+            backGraphics.drawImage(island2.getImage(), island2.getX(), island2.getY(), null);
+            backGraphics.drawImage(island1.getImage(), island1.getX(), island1.getY(), null);
             Iterator<EnemyPlaneController> iter = enemyPlaneControllerList.iterator();
             while (iter.hasNext()) {
-                System.out.println("here it is");;
                 EnemyPlaneController temp = iter.next();
                 temp.draw(backGraphics);
             }
-            backGraphics.drawImage(island2.getImage(), island2.getX(), island2.getY(), null);
-            backGraphics.drawImage(island1.getImage(), island1.getX(), island1.getY(), null);
-//            backGraphics.drawImage(playerPlane.getImage(), playerPlane.getX(), playerPlane.getY(),
-//                    playerPlane.getImage().getWidth(null), playerPlane.getImage().getHeight(null), null);
+
+
             playerPlaneController.draw(backGraphics);
-//            backGraphics.drawImage(enemyPlaneDown.getImage(), enemyPlaneDown.getX(), enemyPlaneDown.getY(),
-//                    enemyPlaneDown.getPlaneWidth(), enemyPlaneDown.getPlaneHeight(), null);
-//            backGraphics.drawImage(enemyPlaneCross1.getImage(), enemyPlaneCross1.getX(), enemyPlaneCross1.getY(),
-//                    enemyPlaneCross1.getPlaneWidth(), enemyPlaneCross1.getPlaneHeight(), null);
-            for (EnemyBullet temp : enemyBulletList) {
-                backGraphics.drawImage(temp.getImage(), temp.getX(), temp.getY(), null);
-                temp.moveDown();
 
-            }
-
-//            Iterator<PlayerBulletController> iter = playerBulletList.iterator();
-//            while (iter.hasNext()) {
-//                PlayerBulletController temp = iter.next();
-//                if (enemyPlaneDown.getHitByPlayerBullet(temp)) {
-//                    iter.remove();
-//                    int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-//                    enemyForExplosion = enemyPlaneDown;
-//                    enemyPlaneDown = new EnemyPlane(randomX, 0,
-//                            "enemy_plane_white_3.png", ENEMYPLANESPEED);
-//                } else if (enemyPlaneCross1.getHitByPlayerBullet(temp)) {
-//                    iter.remove();
-//                    enemyForExplosion = enemyPlaneCross1;
-//                    enemyPlaneCross1 = new EnemyPlane(0, 0, "enemy-green-1.png", ENEMYPLANESPEED);
-//                } else {
-//                    backGraphics.drawImage(temp.getImage(), temp.getX(), temp.getY(), temp.getBulletWidth(), temp.getBulletHeight(), null);
-//                    temp.moveUp();
-//                }
-//
-//            }
             Iterator<PlayerBulletController> iter1 = playerBulletList.iterator();
             while (iter1.hasNext()) {
                 PlayerBulletController temp = iter1.next();
                 temp.draw(backGraphics);
             }
-//            if (enemyForExplosion != null) {
-//                enemyForExplosion.enemyBlowUp();
-//                backGraphics.drawImage(enemyForExplosion.getImage(), enemyForExplosion.getX(), enemyForExplosion.getY(), null);
-//                if (enemyForExplosion.getStateOfExplosion() > 6)
-//                    enemyForExplosion = null;
-//            }
+
+            Iterator<EnemyPlaneController> iter2 = enemyPlaneExplosionList.iterator();
+            while (iter2.hasNext()) {
+                EnemyPlaneController temp = iter2.next();
+                temp.getView().drawExplosion(backGraphics, temp.getModel());
+            }
+
+            Iterator<EnemyBulletController> iter3 = enemyBulletControllerList.iterator();
+            while (iter3.hasNext()) {
+                EnemyBulletController temp = iter3.next();
+                temp.draw(backGraphics);
+            }
             if (powerUp != null) {
                 backGraphics.drawImage(powerUp.getImage(), powerUp.getX(), powerUp.getY(), null);
                 powerUp.moveDown();
@@ -269,16 +284,12 @@ public class GameWindow extends Frame {
                     powerUp = null;
             }
 
-//            enemyPlaneDown.moveDown();
-//            enemyPlaneCross1.moveCrossToRight();
             backgroundImage.moveDown();
             backgroundImage2.moveDown();
             island1.moveDown();
             island2.moveDown();
             graphics.drawImage(backBufferedImage, 0, 0, null);
         }
-
     }
-
 
 }
