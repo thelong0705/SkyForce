@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bdcf6523-7758-44c8-825b-eda15781b966" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/controllers/EnemyBulletController.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/models/EnemyBulletModel.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/views/EnemyBulletView.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow$1.class" afterPath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow$2.class" afterPath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow$3.class" afterPath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow$4.class" afterPath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow.class" afterPath="$PROJECT_DIR$/out/production/android8-ci-LongDT/com/company/GameWindow.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/android8-ci-LongDT/controllers/EnemyPlaneController.class" afterPath="$PROJECT_DIR$/out/production/android8-ci-LongDT/controllers/EnemyPlaneController.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/android8-ci-LongDT/models/PlayerBulletModel.class" afterPath="$PROJECT_DIR$/out/production/android8-ci-LongDT/models/PlayerBulletModel.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/android8-ci-LongDT/views/EnemyPlaneView.class" afterPath="$PROJECT_DIR$/out/production/android8-ci-LongDT/views/EnemyPlaneView.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/company/GameWindow.java" afterPath="$PROJECT_DIR$/src/com/company/GameWindow.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/controllers/EnemyPlaneController.java" afterPath="$PROJECT_DIR$/src/controllers/EnemyPlaneController.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/models/PlayerBulletModel.java" afterPath="$PROJECT_DIR$/src/models/PlayerBulletModel.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/EnemyPlaneView.java" afterPath="$PROJECT_DIR$/src/views/EnemyPlaneView.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -39,8 +24,8 @@
       <file leaf-file-name="GameWindow.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/company/GameWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="86">
-              <caret line="229" column="14" lean-forward="false" selection-start-line="229" selection-start-column="14" selection-end-line="229" selection-end-column="14" />
+            <state relative-caret-position="306">
+              <caret line="158" column="43" lean-forward="false" selection-start-line="158" selection-start-column="43" selection-end-line="158" selection-end-column="43" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1746#1769#0" expanded="true" />
@@ -57,7 +42,7 @@
       <file leaf-file-name="EnemyBulletController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/controllers/EnemyBulletController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
+            <state relative-caret-position="324">
               <caret line="35" column="89" lean-forward="false" selection-start-line="35" selection-start-column="89" selection-end-line="35" selection-end-column="89" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -510,7 +495,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -878,16 +863,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/controllers/EnemyBulletController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="35" column="89" lean-forward="false" selection-start-line="35" selection-start-column="89" selection-end-line="35" selection-end-column="89" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/controllers/EnemyPlaneController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="188">
@@ -902,10 +877,20 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/controllers/EnemyBulletController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="324">
+          <caret line="35" column="89" lean-forward="false" selection-start-line="35" selection-start-column="89" selection-end-line="35" selection-end-column="89" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/company/GameWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="86">
-          <caret line="229" column="14" lean-forward="false" selection-start-line="229" selection-start-column="14" selection-end-line="229" selection-end-column="14" />
+        <state relative-caret-position="306">
+          <caret line="158" column="43" lean-forward="false" selection-start-line="158" selection-start-column="43" selection-end-line="158" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1746#1769#0" expanded="true" />

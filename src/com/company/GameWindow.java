@@ -138,9 +138,11 @@ public class GameWindow extends Frame {
                     Iterator<PlayerBulletController> iter = playerBulletList.iterator();
                     while (iter.hasNext()) {
                         PlayerBulletController temp = iter.next();
-                        if (temp.getModel().getY() > frameHeightSize)
+
+                        if (temp.getModel().getY() < 0) {
                             iter.remove();
-                        else {
+
+                        } else {
                             temp.run();
                         }
                     }
@@ -153,13 +155,9 @@ public class GameWindow extends Frame {
                     Iterator<EnemyBulletController> iter2 = enemyBulletControllerList.iterator();
                     while (iter2.hasNext()) {
                         EnemyBulletController temp = iter2.next();
-                        if (temp.getModel().getY() > frameHeightSize)
-                        {
+                        if (temp.getModel().getY() > frameHeightSize) {
                             iter2.remove();
-
-                        }
-
-                        else
+                        } else
                             temp.run();
                     }
 
@@ -189,9 +187,8 @@ public class GameWindow extends Frame {
     }
 
 
-
     private void checkIfEnemyHitByPlayerBullet(ArrayList<EnemyPlaneController> enemyPlaneControllerList,
-                                                ArrayList<PlayerBulletController> playerBulletControllerList) {
+                                               ArrayList<PlayerBulletController> playerBulletControllerList) {
         int bulletCenterX;
         int bulletCenterY;
         int enemyX;
@@ -211,26 +208,21 @@ public class GameWindow extends Frame {
                 if (bulletCenterX > enemyX && bulletCenterX < enemyX + enemyPlane.getModel().getWidth()
                         && bulletCenterY > enemyY && bulletCenterY < enemyY + enemyPlane.getModel().getHeight()) {
                     enemyPlaneExplosionList.add(new EnemyPlaneController(enemyX, enemyY, null));
-                    iter.remove();
                     iter1.remove();
                     isHit = true;
                     break;
                 }
             }
             if (!isHit) {
-                if(enemyPlane.getModel().getY()<frameHeightSize)
-                {
+                if (enemyPlane.getModel().getY() < frameHeightSize) {
                     enemyPlane.moveDown();
                     if (enemyPlane.getModel().getY() % 200 == 0)
                         enemyBulletControllerList = enemyPlane.shootBullet(enemyBulletControllerList);
-                }
-                else
-                {
+                } else {
                     iter.remove();
-              
                 }
-
-
+            } else {
+                iter.remove();
             }
 
         }
@@ -255,15 +247,15 @@ public class GameWindow extends Frame {
             while (iter.hasNext()) {
                 EnemyPlaneController temp = iter.next();
                 temp.draw(backGraphics);
+
             }
-
-
             playerPlaneController.draw(backGraphics);
 
             Iterator<PlayerBulletController> iter1 = playerBulletList.iterator();
             while (iter1.hasNext()) {
                 PlayerBulletController temp = iter1.next();
                 temp.draw(backGraphics);
+                System.out.println(playerBulletList.size());
             }
 
             Iterator<EnemyPlaneController> iter2 = enemyPlaneExplosionList.iterator();
