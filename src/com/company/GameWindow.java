@@ -28,7 +28,7 @@ public class GameWindow extends Frame {
     public static final int PLAYERPLANESPEED = 10;
     public static final int ENEMYPLANESPEED = 2;
     public static final int PLAYERBULLETSPEED = 5;
-    public static final int ENEMYBULLETSPEED = 10;
+    public static final int ENEMYBULLETSPEED = 3;
     public static final int PLANEWIDTH = 70;
     public static final int PLANEHEIGHT = 50;
     public static final int PLAYERBULLETWIDTH = 13;
@@ -80,6 +80,7 @@ public class GameWindow extends Frame {
                 BACKGROUNDSPEED, frameWidthSize, frameHeightSize);
         backgroundImage2 = new BackGround("background1.png", 0, -frameHeightSize,
                 BACKGROUNDSPEED, frameWidthSize, frameHeightSize);
+
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
@@ -124,21 +125,17 @@ public class GameWindow extends Frame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    repaint();
-                    if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
+//                     repaint();
+                         if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
                         randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
                         EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
                                 Utils.loadImageFromFile("enemy_plane_white_3.png"));
                         enemyPlaneControllerList.add(enemyPlaneController);
-
                     }
-
                     checkIfEnemyHitByPlayerBullet(enemyPlaneControllerList, playerBulletList);
-
                     Iterator<PlayerBulletController> iter = playerBulletList.iterator();
                     while (iter.hasNext()) {
                         PlayerBulletController temp = iter.next();
-
                         if (temp.getModel().getY() < 0) {
                             iter.remove();
 
@@ -160,8 +157,8 @@ public class GameWindow extends Frame {
                         } else
                             temp.run();
                     }
-
                     cycleCounter++;
+                    repaint();
                 }
             }
 
@@ -243,30 +240,20 @@ public class GameWindow extends Frame {
                     backgroundImage2.getWidth(), backgroundImage2.getHeight(), null);
             backGraphics.drawImage(island2.getImage(), island2.getX(), island2.getY(), null);
             backGraphics.drawImage(island1.getImage(), island1.getX(), island1.getY(), null);
-            Iterator<EnemyPlaneController> iter = enemyPlaneControllerList.iterator();
-            while (iter.hasNext()) {
-                EnemyPlaneController temp = iter.next();
+            for (EnemyPlaneController temp : enemyPlaneControllerList) {
                 temp.draw(backGraphics);
-
             }
             playerPlaneController.draw(backGraphics);
 
-            Iterator<PlayerBulletController> iter1 = playerBulletList.iterator();
-            while (iter1.hasNext()) {
-                PlayerBulletController temp = iter1.next();
+            for (PlayerBulletController temp : playerBulletList) {
                 temp.draw(backGraphics);
-                System.out.println(playerBulletList.size());
             }
 
-            Iterator<EnemyPlaneController> iter2 = enemyPlaneExplosionList.iterator();
-            while (iter2.hasNext()) {
-                EnemyPlaneController temp = iter2.next();
+            for (EnemyPlaneController temp : enemyPlaneExplosionList) {
                 temp.getView().drawExplosion(backGraphics, temp.getModel());
             }
 
-            Iterator<EnemyBulletController> iter3 = enemyBulletControllerList.iterator();
-            while (iter3.hasNext()) {
-                EnemyBulletController temp = iter3.next();
+            for (EnemyBulletController temp : enemyBulletControllerList) {
                 temp.draw(backGraphics);
             }
             if (powerUp != null) {
