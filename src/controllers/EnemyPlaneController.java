@@ -4,7 +4,10 @@ import com.company.EnemyPlane;
 import com.company.GameWindow;
 import com.company.Utils;
 import models.EnemyPlaneModel;
+import models.GameModel;
+import views.EnemyBulletView;
 import views.EnemyPlaneView;
+import views.GameView;
 import views.PlayerBulletView;
 
 import java.awt.*;
@@ -13,53 +16,61 @@ import java.util.ArrayList;
 /**
  * Created by Inpriron on 2/27/2017.
  */
-public class EnemyPlaneController {
-
-           private EnemyPlaneModel model;
-        private EnemyPlaneView view;
-
-    public EnemyPlaneModel getModel() {
-        return model;
-    }
-
-    public EnemyPlaneView getView() {
-        return view;
-    }
-
+public class EnemyPlaneController extends GameController {
     public EnemyPlaneController(EnemyPlaneModel model, EnemyPlaneView view) {
-        this.model = model;
-        this.view = view;
-
+        super(model, view);
     }
+
 
     public EnemyPlaneController(int x, int y, Image image) {
         this(new EnemyPlaneModel(x, y, GameWindow.ENEMYPLANESPEED, GameWindow.ENEMYPLANEWIDTH, GameWindow.ENEMYPLANEHEIGHT),
                 new EnemyPlaneView(image));
     }
 
-    public void draw(Graphics graphics) {
-        view.draw(graphics, model);
-    }
 
     public void moveUp() {
-        model.moveUp();
+        if (model instanceof EnemyPlaneModel) {
+            EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
+            planeModel.moveUp();
+        }
     }
 
     public void moveRight() {
-        model.moveRight();
+        if (model instanceof EnemyPlaneModel) {
+            EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
+            planeModel.moveRight();
+        }
     }
 
     public void moveLeft() {
-        model.moveLeft();
+        if (model instanceof EnemyPlaneModel) {
+            EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
+            planeModel.moveLeft();
+        }
     }
 
     public void moveDown() {
-        model.moveDown();
-    }
-    public void moveCrossToRight(){
-        model.moveCrossToRight();
+        if (model instanceof EnemyPlaneModel) {
+            EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
+            planeModel.moveDown();
+        }
     }
 
+    public void moveCrossToRight(){
+        if (model instanceof EnemyPlaneModel) {
+            EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
+            planeModel.moveCrossToRight();
+        }
+    }
+
+    public EnemyPlaneView getView()
+    {
+        if (view instanceof EnemyPlaneView) {
+            EnemyPlaneView planeView = (EnemyPlaneView) view;
+            return planeView;
+        }
+       return null;
+    }
     public ArrayList<EnemyBulletController> shootBullet(ArrayList<EnemyBulletController> enemyBulletControllerList) {
         EnemyBulletController enemyBulletController
                 = new EnemyBulletController(

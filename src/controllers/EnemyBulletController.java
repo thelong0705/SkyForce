@@ -33,7 +33,7 @@ public class EnemyBulletController {
     }
 
     public EnemyBulletController(int x, int y) {
-        this( new EnemyBulletModel(x,y, GameWindow.ENEMYBULLETWIDTH,GameWindow.ENEMYBULLETHEIGHT),
+        this( new EnemyBulletModel(x,y,GameWindow.ENEMYBULLETSPEED, GameWindow.ENEMYBULLETWIDTH,GameWindow.ENEMYBULLETHEIGHT),
                 new EnemyBulletView(Utils.loadImageFromFile("bullet-round.png")));
     }
 

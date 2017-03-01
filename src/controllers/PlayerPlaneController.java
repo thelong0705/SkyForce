@@ -4,8 +4,10 @@ package controllers;
 import com.company.GameWindow;
 import com.company.PlayerBullet;
 import com.company.Utils;
+import models.GameModel;
 import models.PlayerBulletModel;
 import models.PlayerPlaneModel;
+import views.GameView;
 import views.PlayerPlaneView;
 
 import java.awt.*;
@@ -14,21 +16,9 @@ import java.util.ArrayList;
 /**
  * Created by Inpriron on 2/27/2017.
  */
-public class PlayerPlaneController {
-    private PlayerPlaneModel model;
-    private PlayerPlaneView view;
-
-    public PlayerPlaneModel getModel() {
-        return model;
-    }
-
-    public PlayerPlaneView getView() {
-        return view;
-    }
-
-    public PlayerPlaneController(PlayerPlaneModel model, PlayerPlaneView view) {
-        this.model = model;
-        this.view = view;
+public class PlayerPlaneController extends GameController {
+    public PlayerPlaneController(PlayerPlaneModel model, GameView view) {
+        super(model, view);
     }
 
     public PlayerPlaneController(int x, int y) {
@@ -36,24 +26,33 @@ public class PlayerPlaneController {
                 new PlayerPlaneView(Utils.loadImageFromFile("plane3.png")));
     }
 
-    public void draw(Graphics graphics) {
-        view.draw(graphics, model);
-    }
 
     public void moveUp() {
-        model.moveUp();
+        if (model instanceof PlayerPlaneModel) {
+            PlayerPlaneModel planeModel = (PlayerPlaneModel) model;
+            planeModel.moveUp();
+        }
     }
 
     public void moveRight() {
-        model.moveRight();
+        if (model instanceof PlayerPlaneModel) {
+            PlayerPlaneModel planeModel = (PlayerPlaneModel) model;
+            planeModel.moveRight();
+        }
     }
 
     public void moveLeft() {
-        model.moveLeft();
+        if (model instanceof PlayerPlaneModel) {
+            PlayerPlaneModel planeModel = (PlayerPlaneModel) model;
+            planeModel.moveLeft();
+        }
     }
 
     public void moveDown() {
-        model.moveDown();
+        if (model instanceof PlayerPlaneModel) {
+            PlayerPlaneModel planeModel = (PlayerPlaneModel) model;
+            planeModel.moveDown();
+        }
     }
 
 
