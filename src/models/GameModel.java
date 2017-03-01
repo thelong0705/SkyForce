@@ -58,4 +58,10 @@ public class GameModel {
     public void setHeight(int height) {
         this.height = height;
     }
+
+    public double getMidX()
+    {
+        return x+width/2.0;
+    }
+
 }

@@ -12,18 +12,21 @@ import views.PlayerPlaneView;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by Inpriron on 2/27/2017.
  */
 public class PlayerPlaneController extends GameController {
-    public PlayerPlaneController(PlayerPlaneModel model, GameView view) {
+    private Vector<PlayerBulletController> playerBulletControllers;
+    public PlayerPlaneController(PlayerPlaneModel model, GameView view,Vector<PlayerBulletController> playerBulletControllers) {
         super(model, view);
+        this.playerBulletControllers= playerBulletControllers;
     }
 
-    public PlayerPlaneController(int x, int y) {
+    public PlayerPlaneController(int x, int y,Vector<PlayerBulletController> playerBulletControllers) {
         this(new PlayerPlaneModel(x, y, GameWindow.PLAYERPLANESPEED, GameWindow.PLANEWIDTH, GameWindow.PLANEHEIGHT),
-                new PlayerPlaneView(Utils.loadImageFromFile("plane3.png")));
+                new PlayerPlaneView(Utils.loadImageFromFile("plane3.png")),playerBulletControllers);
     }
 
 
@@ -56,12 +59,18 @@ public class PlayerPlaneController extends GameController {
     }
 
 
-    public ArrayList<PlayerBulletController> shootBullet(ArrayList<PlayerBulletController> playerBulletControllerList) {
-        PlayerBulletController playerBulletController
-                = new PlayerBulletController(
-                model.getX() + (GameWindow.PLANEWIDTH - GameWindow.PLAYERBULLETWIDTH) / 2,
-                model.getY() - GameWindow.PLAYERBULLETHEIGHT);
-        playerBulletControllerList.add(playerBulletController);
-        return playerBulletControllerList;
+//    public ArrayList<PlayerBulletController> shootBullet(ArrayList<PlayerBulletController> playerBulletControllerList) {
+//        PlayerBulletController playerBulletController
+//                = new PlayerBulletController(
+//                model.getX() + (GameWindow.PLANEWIDTH - GameWindow.PLAYERBULLETWIDTH) / 2,
+//                model.getY() - GameWindow.PLAYERBULLETHEIGHT);
+//        playerBulletControllerList.add(playerBulletController);
+//        return playerBulletControllerList;
+//    }
+    public void shoot()
+    {
+        PlayerBulletController playerBulletController= new PlayerBulletController((int)model.getMidX()-GameWindow.PLAYERBULLETWIDTH/2,
+                model.getY()-GameWindow.PLAYERBULLETHEIGHT);
+        playerBulletControllers.add(playerBulletController);
     }
 }

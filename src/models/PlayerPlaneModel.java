@@ -32,4 +32,10 @@ public class PlayerPlaneModel extends GameModel {
         if(x<=GameWindow.frameWidthSize-width-speed)
             x+=speed;
     }
+    public double getMidX()
+    {
+        return x+width/2.0;
+    }
+
+
 }

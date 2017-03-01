@@ -51,15 +51,15 @@ public class GameWindow extends Frame {
     private Graphics backGraphics;
     private PlayerPlaneController playerPlaneController;
     ArrayList<EnemyPlaneController> enemyPlaneControllerList = new ArrayList<EnemyPlaneController>();
-    ArrayList<PlayerBulletController> playerBulletList = new ArrayList<PlayerBulletController>();
+//    ArrayList<PlayerBulletController> playerBulletList = new ArrayList<PlayerBulletController>();
     ArrayList<EnemyPlaneController> enemyPlaneExplosionList = new ArrayList<EnemyPlaneController>();
-
+    Vector<PlayerBulletController> playerBulletControllers= new Vector<>();
     public GameWindow() {
 
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
 
-        playerPlaneController = new PlayerPlaneController(frameWidthSize / 2 - PLANEWIDTH / 2, frameHeightSize - PLANEHEIGHT);
+        playerPlaneController = new PlayerPlaneController(frameWidthSize / 2 - PLANEWIDTH / 2, frameHeightSize - PLANEHEIGHT,playerBulletControllers);
 
         island1 = new Island("island.png", 200, 200, BACKGROUNDSPEED);
         island2 = new Island("island-2.png", 50, 400, BACKGROUNDSPEED);
@@ -92,7 +92,7 @@ public class GameWindow extends Frame {
                 super.keyPressed(keyEvent);
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
-                        playerBulletList = playerPlaneController.shootBullet(playerBulletList);
+                        playerPlaneController.shoot();
                         break;
                     case KeyEvent.VK_RIGHT:
                         playerPlaneController.moveRight();
@@ -132,8 +132,12 @@ public class GameWindow extends Frame {
                                 Utils.loadImageFromFile("enemy_plane_white_3.png"));
                         enemyPlaneControllerList.add(enemyPlaneController);
                     }
-                    checkIfEnemyHitByPlayerBullet(enemyPlaneControllerList, playerBulletList);
-                    Iterator<PlayerBulletController> iter = playerBulletList.iterator();
+                   // checkIfEnemyHitByPlayerBullet(enemyPlaneControllerList, playerBulletControllers);
+                    for(EnemyPlaneController enemyPlane:enemyPlaneControllerList)
+                    {
+                        enemyPlane.moveDown();
+                    }
+                    Iterator<PlayerBulletController> iter = playerBulletControllers.iterator();
                     while (iter.hasNext()) {
                         PlayerBulletController temp = iter.next();
                         if (temp.getModel().getY() < 0) {
@@ -245,7 +249,7 @@ public class GameWindow extends Frame {
             }
             playerPlaneController.draw(backGraphics);
 
-            for (PlayerBulletController temp : playerBulletList) {
+            for (PlayerBulletController temp : playerBulletControllers) {
                 temp.draw(backGraphics);
             }
 
