@@ -22,10 +22,15 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class GameWindow extends Frame {
     //Image backgroundImage;
+    public boolean isKeyLeft = false;
+    public boolean isKeyRight = false;
+    public boolean isKeyUp = false;
+    public boolean isKeyDown = false;
+    public boolean isSpace=false;
     public static final int frameWidthSize = 400;
     public static final int frameHeightSize = 600;
     public static final int BACKGROUNDSPEED = 1;
-    public static final int PLAYERPLANESPEED = 10;
+    public static final int PLAYERPLANESPEED = 5;
     public static final int ENEMYPLANESPEED = 2;
     public static final int PLAYERBULLETSPEED = 5;
     public static final int ENEMYBULLETSPEED = 3;
@@ -51,15 +56,17 @@ public class GameWindow extends Frame {
     private Graphics backGraphics;
     private PlayerPlaneController playerPlaneController;
     ArrayList<EnemyPlaneController> enemyPlaneControllerList = new ArrayList<EnemyPlaneController>();
-//    ArrayList<PlayerBulletController> playerBulletList = new ArrayList<PlayerBulletController>();
+    //    ArrayList<PlayerBulletController> playerBulletList = new ArrayList<PlayerBulletController>();
     ArrayList<EnemyPlaneController> enemyPlaneExplosionList = new ArrayList<EnemyPlaneController>();
-    Vector<PlayerBulletController> playerBulletControllers= new Vector<>();
+    Vector<PlayerBulletController> playerBulletControllers = new Vector<>();
+
     public GameWindow() {
 
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
 
-        playerPlaneController = new PlayerPlaneController(frameWidthSize / 2 - PLANEWIDTH / 2, frameHeightSize - PLANEHEIGHT,playerBulletControllers);
+        playerPlaneController = new PlayerPlaneController(frameWidthSize / 2 - PLANEWIDTH / 2,
+                frameHeightSize - PLANEHEIGHT, playerBulletControllers);
 
         island1 = new Island("island.png", 200, 200, BACKGROUNDSPEED);
         island2 = new Island("island-2.png", 50, 400, BACKGROUNDSPEED);
@@ -92,28 +99,47 @@ public class GameWindow extends Frame {
                 super.keyPressed(keyEvent);
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
-                        playerPlaneController.shoot();
+                        isSpace=true;
                         break;
                     case KeyEvent.VK_RIGHT:
-                        playerPlaneController.moveRight();
+                        isKeyRight = true;
                         break;
                     case KeyEvent.VK_LEFT:
-                        playerPlaneController.moveLeft();
+                        isKeyLeft = true;
                         break;
                     case KeyEvent.VK_UP:
-                        playerPlaneController.moveUp();
+                        isKeyUp = true;
                         break;
                     case KeyEvent.VK_DOWN:
-                        playerPlaneController.moveDown();
+                        isKeyDown = true;
                         break;
                 }
+
             }
 
             @Override
             public void keyReleased(KeyEvent keyEvent) {
                 super.keyReleased(keyEvent);
+                switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.VK_SPACE:
+                        isSpace=false;
+                        break;
+                    case KeyEvent.VK_RIGHT:
+                        isKeyRight = false;
+                        break;
+                    case KeyEvent.VK_LEFT:
+                        isKeyLeft = false;
+                        break;
+                    case KeyEvent.VK_UP:
+                        isKeyUp = false;
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        isKeyDown = false;
+                        break;
+                }
             }
         });
+
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -125,16 +151,24 @@ public class GameWindow extends Frame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-//                     repaint();
-                         if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
+                    if(isSpace)
+                        playerPlaneController.shoot();
+                    if(isKeyRight)
+                        playerPlaneController.moveRight();
+                    if(isKeyLeft)
+                        playerPlaneController.moveLeft();
+                    if(isKeyUp)
+                        playerPlaneController.moveUp();
+                    if(isKeyDown)
+                        playerPlaneController.moveDown();
+                    if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
                         randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
                         EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
                                 Utils.loadImageFromFile("enemy_plane_white_3.png"));
                         enemyPlaneControllerList.add(enemyPlaneController);
                     }
-                   // checkIfEnemyHitByPlayerBullet(enemyPlaneControllerList, playerBulletControllers);
-                    for(EnemyPlaneController enemyPlane:enemyPlaneControllerList)
-                    {
+                    // checkIfEnemyHitByPlayerBullet(enemyPlaneControllerList, playerBulletControllers);
+                    for (EnemyPlaneController enemyPlane : enemyPlaneControllerList) {
                         enemyPlane.moveDown();
                     }
                     Iterator<PlayerBulletController> iter = playerBulletControllers.iterator();
