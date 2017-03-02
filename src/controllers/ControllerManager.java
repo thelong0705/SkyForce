@@ -23,6 +23,7 @@ public class ControllerManager {
         }
     }
     public void run() {
+        int i=0;
         for(GameController controller : gameControllerVector) {
             {
                 if(controller instanceof PlayerBulletController)
@@ -30,21 +31,17 @@ public class ControllerManager {
                     PlayerBulletController playerBulletController= (PlayerBulletController) controller;
                     playerBulletController.run();
                 }
-                if(controller instanceof EnemyPlaneController)
+                else if(controller instanceof EnemyPlaneController)
                 {
                     EnemyPlaneController enemyPlaneController = (EnemyPlaneController) controller;
                     enemyPlaneController.run(enemyBulletControllerVector);
                 }
-//                if(controller instanceof EnemyBulletController)
-//                {
-//                    EnemyBulletController enemyBulletController= (EnemyBulletController) controller;
-//                    enemyBulletController.run();
-//                }
             }
         }
         for(EnemyBulletController enemyBulletController: enemyBulletControllerVector)
         {
             enemyBulletController.run();
+            gameControllerVector.add(enemyBulletController);
         }
     }
     public void add(GameController controller) {

@@ -33,7 +33,7 @@ public class EnemyPlaneController extends GameController {
     public void run(Vector<EnemyBulletController> enemyBulletControllerVector)
     {
         moveDown();
-       shootBullet(enemyBulletControllerVector);
+        shootBullet(enemyBulletControllerVector);
     }
 //    public void moveUp() {
 //        if (model instanceof EnemyPlaneModel) {
