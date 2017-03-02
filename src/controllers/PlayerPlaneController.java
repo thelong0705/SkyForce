@@ -18,14 +18,14 @@ import java.util.Vector;
  * Created by Inpriron on 2/27/2017.
  */
 public class PlayerPlaneController extends GameController {
-    private Vector<PlayerBulletController> playerBulletControllers;
-    public PlayerPlaneController(PlayerPlaneModel model, GameView view,Vector<PlayerBulletController> playerBulletControllers) {
+    private Vector<GameController> playerBulletControllers;
+    public PlayerPlaneController(PlayerPlaneModel model, GameView view,Vector<GameController> playerBulletControllers) {
         super(model, view);
         this.playerBulletControllers= playerBulletControllers;
     }
 
-    public PlayerPlaneController(int x, int y,Vector<PlayerBulletController> playerBulletControllers) {
-        this(new PlayerPlaneModel(x, y, GameWindow.PLAYERPLANESPEED, GameWindow.PLANEWIDTH, GameWindow.PLANEHEIGHT),
+    public PlayerPlaneController(int x, int y,Vector<GameController> playerBulletControllers) {
+        this(new PlayerPlaneModel(x, y, GameWindow.PLANEWIDTH, GameWindow.PLANEHEIGHT,GameWindow.PLAYERPLANESPEED),
                 new PlayerPlaneView(Utils.loadImageFromFile("plane3.png")),playerBulletControllers);
     }
 

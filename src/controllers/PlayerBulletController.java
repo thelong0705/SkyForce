@@ -21,7 +21,7 @@ public class PlayerBulletController extends GameController {
     }
 
         public PlayerBulletController(int x, int y) {
-        this( new PlayerBulletModel(x,y, GameWindow.PLAYERBULLETSPEED,GameWindow.PLAYERBULLETWIDTH,GameWindow.PLAYERBULLETHEIGHT),
+        this( new PlayerBulletModel(x,y, GameWindow.PLAYERBULLETWIDTH,GameWindow.PLAYERBULLETHEIGHT,GameWindow.PLAYERBULLETSPEED),
                 new PlayerBulletView(Utils.loadImageFromFile("bullet.png")));
     }
     public void run() {
@@ -29,10 +29,6 @@ public class PlayerBulletController extends GameController {
             PlayerBulletModel bulletModel = (PlayerBulletModel) model;
             bulletModel.fly();
         }
-
     }
-
-
-
 
 }

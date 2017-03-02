@@ -19,7 +19,7 @@ public class EnemyBulletController extends GameController {
     }
 
     public EnemyBulletController(int x, int y) {
-        this( new EnemyBulletModel(x,y,GameWindow.ENEMYBULLETSPEED, GameWindow.ENEMYBULLETWIDTH,GameWindow.ENEMYBULLETHEIGHT),
+        this( new EnemyBulletModel(x,y,GameWindow.ENEMYBULLETWIDTH,GameWindow.ENEMYBULLETHEIGHT,GameWindow.ENEMYBULLETSPEED),
                 new EnemyBulletView(Utils.loadImageFromFile("bullet-round.png")));
     }
 
@@ -29,11 +29,5 @@ public class EnemyBulletController extends GameController {
             EnemyBulletModel enemyBulletModel= (EnemyBulletModel) model;
             enemyBulletModel.fly();
         }
-
-
     }
-
-
-
-
 }

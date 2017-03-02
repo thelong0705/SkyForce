@@ -11,13 +11,14 @@ public class GameModel {
     protected  int height;
 
 
-    public GameModel(int x, int y, int speed,int width, int height) {
+    public GameModel(int x, int y, int width, int height,int speed) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.speed = speed;
     }
+
 
     public int getSpeed() {
         return speed;
@@ -63,5 +64,6 @@ public class GameModel {
     {
         return x+width/2.0;
     }
+
 
 }

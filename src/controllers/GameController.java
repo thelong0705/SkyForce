@@ -33,5 +33,8 @@ public class GameController {
 
         view.draw(graphics, model);
     }
+    public void run()
+    {
 
+    }
 }
