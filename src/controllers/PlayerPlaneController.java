@@ -3,6 +3,7 @@ package controllers;
 
 import com.company.GameWindow;
 import com.company.PlayerBullet;
+import com.company.PlayerPlane;
 import com.company.Utils;
 import models.GameModel;
 import models.PlayerBulletModel;
@@ -18,6 +19,8 @@ import java.util.Vector;
  * Created by Inpriron on 2/27/2017.
  */
 public class PlayerPlaneController extends GameController {
+    public static final PlayerPlaneController instance =   new PlayerPlaneController(GameWindow.frameWidthSize / 2 - GameWindow.PLANEWIDTH / 2,
+            GameWindow.frameHeightSize - GameWindow.PLANEHEIGHT, GameWindow.controllerManager.gameControllerVector);;
     private Vector<GameController> playerBulletControllers;
     public PlayerPlaneController(PlayerPlaneModel model, GameView view,Vector<GameController> playerBulletControllers) {
         super(model, view);

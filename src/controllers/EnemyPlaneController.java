@@ -37,30 +37,18 @@ public class EnemyPlaneController extends GameController {
 
     public void run(Vector<EnemyBulletController> enemyBulletControllerVector)
     {
-        moveDown();
-        shootBullet(enemyBulletControllerVector);
-    }
-//    public void moveUp() {
-//        if (model instanceof EnemyPlaneModel) {
-//            EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
-//            planeModel.moveUp();
-//        }
-//    }
-//
-//    public void moveRight() {
-//        if (model instanceof EnemyPlaneModel) {
-//            EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
-//            planeModel.moveRight();
-//        }
-//    }
-//
-//    public void moveLeft() {
-//        if (model instanceof EnemyPlaneModel) {
-//            EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
-//            planeModel.moveLeft();
-//        }
-//    }
+        if(type==Type.moveDownEnemy)
+        {
+            moveDown();
+            shootBullet(enemyBulletControllerVector);
+        }
+        else
+        {
+            moveCrossToRight();
+            shootBombTowardPlayer(enemyBulletControllerVector);
+        }
 
+    }
     public void moveDown() {
         if (model instanceof EnemyPlaneModel) {
             EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
@@ -89,9 +77,23 @@ public class EnemyPlaneController extends GameController {
             EnemyBulletController enemyBulletController
                     = new EnemyBulletController(
                     model.getX() + (GameWindow.ENEMYPLANEWIDTH - GameWindow.ENEMYBULLETWIDTH) / 2,
-                    model.getY() + GameWindow.ENEMYPLANEHEIGHT);
+                    model.getY() + GameWindow.ENEMYPLANEHEIGHT,EnemyBulletController.Type.BULLET);
             enemyBulletControllerVector.add(enemyBulletController);
         }
 
+    }
+    public void shootBombTowardPlayer(Vector<EnemyBulletController> enemyBulletControllerVector)
+    {
+        if(model.getY()%50==0)
+        {
+            EnemyBulletController enemyBulletController
+                    = new EnemyBulletController(
+                    model.getX() + (GameWindow.ENEMYPLANEWIDTH - GameWindow.ENEMYBULLETWIDTH) / 2,
+                    model.getY() + GameWindow.ENEMYPLANEHEIGHT+50,EnemyBulletController.Type.BOMB);
+            enemyBulletController.getModel().setWidth(GameWindow.ENEMYBULLETWIDTH*2);
+            enemyBulletController.getModel().setHeight(GameWindow.ENEMYBULLETHEIGHT*2);
+            enemyBulletController.getView().setImage(Utils.loadImageFromFile("bomb.png"));
+            enemyBulletControllerVector.add(enemyBulletController);
+        }
     }
 }

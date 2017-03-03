@@ -27,8 +27,8 @@ public class GameWindow extends Frame {
     public static final int frameHeightSize = 600;
     public static final int BACKGROUNDSPEED = 1;
     public static final int PLAYERPLANESPEED = 5;
-    public static final int ENEMYPLANESPEED = 1;
-    public static final int PLAYERBULLETSPEED = 1;
+    public static final int ENEMYPLANESPEED = 2;
+    public static final int PLAYERBULLETSPEED = 3;
     public static final int ENEMYBULLETSPEED = 3;
     public static final int PLANEWIDTH = 70;
     public static final int PLANEHEIGHT = 50;
@@ -49,16 +49,15 @@ public class GameWindow extends Frame {
     Thread thread;
     Thread thread1;
     private Graphics backGraphics;
-    private PlayerPlaneController playerPlaneController;
-    Vector<PlayerBulletController> playerBulletControllers = new Vector<>();
-    ControllerManager controllerManager;
+    //public static PlayerPlaneController playerPlaneController;
+    public static ControllerManager controllerManager;
     public GameWindow() {
         controllerManager = new ControllerManager();
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
 
-        playerPlaneController = new PlayerPlaneController(frameWidthSize / 2 - PLANEWIDTH / 2,
-                frameHeightSize - PLANEHEIGHT, controllerManager.gameControllerVector);
+      //  playerPlaneController = new PlayerPlaneController(frameWidthSize / 2 - PLANEWIDTH / 2,
+            //    frameHeightSize - PLANEHEIGHT, controllerManager.gameControllerVector);
 
         island1 = new Island("island.png", 200, 200, BACKGROUNDSPEED);
         island2 = new Island("island-2.png", 50, 400, BACKGROUNDSPEED);
@@ -144,21 +143,27 @@ public class GameWindow extends Frame {
                     }
 
                     if (isKeyRight)
-                        playerPlaneController.moveRight();
+                        PlayerPlaneController.instance.moveRight();
                     if (isKeyLeft)
-                        playerPlaneController.moveLeft();
+                        PlayerPlaneController.instance.moveLeft();
                     if (isKeyUp)
-                        playerPlaneController.moveUp();
+                        PlayerPlaneController.instance.moveUp();
                     if (isKeyDown)
-                        playerPlaneController.moveDown();
+                        PlayerPlaneController.instance.moveDown();
                     if(isSpace&&cycleCounter%5==0) {
-                        playerPlaneController.shoot();
+                        PlayerPlaneController.instance.shoot();
 
                     }
                     if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
                         randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
                         EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
                                 Utils.loadImageFromFile("enemy_plane_white_3.png"), EnemyPlaneController.Type.moveDownEnemy);
+                        controllerManager.add(enemyPlaneController);
+                    }
+                    if(cycleCounter % (CYCLEBETWEENENEMYAPPEEAR*3)==0)
+                    {
+                        EnemyPlaneController enemyPlaneController = new EnemyPlaneController(0, 0,
+                                Utils.loadImageFromFile("enemy-green-1.png"), EnemyPlaneController.Type.moveCrossEnemy);
                         controllerManager.add(enemyPlaneController);
                     }
                     controllerManager.run();
@@ -208,7 +213,7 @@ public class GameWindow extends Frame {
             backGraphics.drawImage(island2.getImage(), island2.getX(), island2.getY(), null);
             backGraphics.drawImage(island1.getImage(), island1.getX(), island1.getY(), null);
 
-            playerPlaneController.draw(backGraphics);
+            PlayerPlaneController.instance.draw(backGraphics);
 
 
             controllerManager.draw(backGraphics);

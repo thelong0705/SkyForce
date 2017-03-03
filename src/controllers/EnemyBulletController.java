@@ -14,20 +14,28 @@ import java.awt.*;
  * Created by Inpriron on 2/27/2017.
  */
 public class EnemyBulletController extends GameController {
-    public EnemyBulletController(GameModel model, GameView view) {
+    public enum Type{
+       BULLET,BOMB;
+    }
+    private Type type;
+    public EnemyBulletController(GameModel model, GameView view,Type type ) {
         super(model, view);
+        this.type=type;
     }
 
-    public EnemyBulletController(int x, int y) {
+    public EnemyBulletController(int x, int y,Type type) {
         this( new EnemyBulletModel(x,y,GameWindow.ENEMYBULLETWIDTH,GameWindow.ENEMYBULLETHEIGHT,GameWindow.ENEMYBULLETSPEED),
-                new EnemyBulletView(Utils.loadImageFromFile("bullet-round.png")));
+                new EnemyBulletView(Utils.loadImageFromFile("bullet-round.png")),type);
     }
 
     public void run() {
         if(model instanceof EnemyBulletModel)
         {
             EnemyBulletModel enemyBulletModel= (EnemyBulletModel) model;
-            enemyBulletModel.fly();
+            if(type==Type.BULLET)
+                enemyBulletModel.fly();
+            else
+                enemyBulletModel.flyToPlayerPlane();
         }
     }
 }

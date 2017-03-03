@@ -34,11 +34,9 @@ public class ControllerManager {
                 GameController controller = gameControllerIterator.next();
                 if (controller.getModel().getY() > GameWindow.frameHeightSize || controller.getModel().getY() < 0)
                     gameControllerIterator.remove();
-                else if(!controller.getModel().isExist())
-                {
+                else if (!controller.getModel().isExist()) {
                     gameControllerIterator.remove();
-                }
-                else {
+                } else {
                     if (controller instanceof PlayerBulletController) {
                         PlayerBulletController playerBulletController = (PlayerBulletController) controller;
                         playerBulletController.run();
@@ -60,33 +58,26 @@ public class ControllerManager {
         }
     }
 
-    public void checkOverLap()
-    {
-       int i;
-       int j;
-       for(i=0;i<gameControllerVector.size()-1;++i)
-       {
-           for(j=i+1;j<gameControllerVector.size();++j)
-           {
-               GameController controller1= gameControllerVector.get(i);
-               GameController controller2= gameControllerVector.get(j);
+    public void checkOverLap() {
+        int i;
+        int j;
+        for (i = 0; i < gameControllerVector.size() - 1; ++i) {
+            for (j = i + 1; j < gameControllerVector.size(); ++j) {
+                GameController controller1 = gameControllerVector.get(i);
+                GameController controller2 = gameControllerVector.get(j);
 
-               if(controller1.getModel().intersects(controller2.getModel()))
-               {
-                   if((controller1 instanceof PlayerBulletController)&&((controller2 instanceof PlayerBulletController)))
-                   {
-                    ;
-                   }
-                   else
-                   {
-                       controller1.getModel().setExist(false);
-                       controller2.getModel().setExist(false);
-                   }
+                if (controller1.getModel().intersects(controller2.getModel())) {
+                    if ((controller1 instanceof PlayerBulletController) && ((controller2 instanceof PlayerBulletController))) {
+                        ;
+                    } else {
+                        controller1.getModel().setExist(false);
+                        controller2.getModel().setExist(false);
+                    }
 
 
-               }
-           }
-       }
+                }
+            }
+        }
     }
 
     public void add(GameController controller) {

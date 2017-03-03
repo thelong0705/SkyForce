@@ -34,8 +34,6 @@ public class EnemyPlaneModel extends GameModel {
     public void moveCrossToRight() {
         x += speed;
         y = x + x / 2;
-        if (x > GameWindow.frameWidthSize && y > GameWindow.frameHeightSize) {
-            x = y = 0;
-        }
+
     }
 }
