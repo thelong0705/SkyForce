@@ -1,5 +1,7 @@
 package models;
 
+import java.awt.*;
+
 /**
  * Created by Inpriron on 2/28/2017.
  */
@@ -9,7 +11,7 @@ public class GameModel {
     protected  int speed;
     protected  int width;
     protected  int height;
-
+    protected boolean isExist=true;
 
     public GameModel(int x, int y, int width, int height,int speed) {
         this.x = x;
@@ -65,5 +67,22 @@ public class GameModel {
         return x+width/2.0;
     }
 
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean exist) {
+        isExist = exist;
+    }
+
+    public Rectangle getRect() {
+        return new Rectangle(x, y, width, height);
+    }
+
+    public boolean intersects(GameModel other) {
+        Rectangle rect1 = this.getRect();
+        Rectangle rect2 = other.getRect();
+        return rect1.intersects(rect2);
+    }
 
 }

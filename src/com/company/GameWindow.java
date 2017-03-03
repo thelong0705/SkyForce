@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GameWindow extends Frame {
-    //Image backgroundImage;
     public boolean isKeyLeft = false;
     public boolean isKeyRight = false;
     public boolean isKeyUp = false;
@@ -29,7 +28,7 @@ public class GameWindow extends Frame {
     public static final int BACKGROUNDSPEED = 1;
     public static final int PLAYERPLANESPEED = 5;
     public static final int ENEMYPLANESPEED = 2;
-    public static final int PLAYERBULLETSPEED = 5;
+    public static final int PLAYERBULLETSPEED = 3;
     public static final int ENEMYBULLETSPEED = 3;
     public static final int PLANEWIDTH = 70;
     public static final int PLANEHEIGHT = 50;
@@ -46,18 +45,13 @@ public class GameWindow extends Frame {
     Island island2;
     EnemyBullet enemyBullet;
     PowerUp powerUp;
-    //    ArrayList<EnemyBulletController> enemyBulletControllerList = new ArrayList<EnemyBulletController>();
     private BufferedImage backBufferedImage;
     Thread thread;
     Thread thread1;
     private Graphics backGraphics;
     private PlayerPlaneController playerPlaneController;
-    //    ArrayList<EnemyPlaneController> enemyPlaneControllerList = new ArrayList<EnemyPlaneController>();
-//        ArrayList<PlayerBulletController> playerBulletList = new ArrayList<PlayerBulletController>();
-//    ArrayList<EnemyPlaneController> enemyPlaneExplosionList = new ArrayList<EnemyPlaneController>();
     Vector<PlayerBulletController> playerBulletControllers = new Vector<>();
     ControllerManager controllerManager;
-
     public GameWindow() {
         controllerManager = new ControllerManager();
         setVisible(true);
@@ -97,7 +91,7 @@ public class GameWindow extends Frame {
                 super.keyPressed(keyEvent);
                 switch (keyEvent.getKeyCode()) {
                     case KeyEvent.VK_SPACE:
-                        playerPlaneController.shoot();
+                        isSpace=true;
                         break;
                     case KeyEvent.VK_RIGHT:
                         isKeyRight = true;
@@ -118,6 +112,9 @@ public class GameWindow extends Frame {
             public void keyReleased(KeyEvent keyEvent) {
                 super.keyReleased(keyEvent);
                 switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.VK_SPACE:
+                        isSpace=false;
+                        break;
                     case KeyEvent.VK_RIGHT:
                         isKeyRight = false;
                         break;
@@ -145,6 +142,7 @@ public class GameWindow extends Frame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+
                     if (isKeyRight)
                         playerPlaneController.moveRight();
                     if (isKeyLeft)
@@ -153,6 +151,10 @@ public class GameWindow extends Frame {
                         playerPlaneController.moveUp();
                     if (isKeyDown)
                         playerPlaneController.moveDown();
+                    if(isSpace&&cycleCounter%10==1) {
+                        playerPlaneController.shoot();
+
+                    }
                     if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
                         randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
                         EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
@@ -207,6 +209,7 @@ public class GameWindow extends Frame {
 
 
             controllerManager.draw(backGraphics);
+            controllerManager.checkOverLap();
 
 //            for (EnemyPlaneController temp : enemyPlaneExplosionList) {
 //                temp.getView().drawExplosion(backGraphics, temp.getModel());
