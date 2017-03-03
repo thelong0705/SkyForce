@@ -27,8 +27,8 @@ public class GameWindow extends Frame {
     public static final int frameHeightSize = 600;
     public static final int BACKGROUNDSPEED = 1;
     public static final int PLAYERPLANESPEED = 5;
-    public static final int ENEMYPLANESPEED = 2;
-    public static final int PLAYERBULLETSPEED = 3;
+    public static final int ENEMYPLANESPEED = 1;
+    public static final int PLAYERBULLETSPEED = 1;
     public static final int ENEMYBULLETSPEED = 3;
     public static final int PLANEWIDTH = 70;
     public static final int PLANEHEIGHT = 50;
@@ -151,19 +151,22 @@ public class GameWindow extends Frame {
                         playerPlaneController.moveUp();
                     if (isKeyDown)
                         playerPlaneController.moveDown();
-                    if(isSpace&&cycleCounter%10==1) {
+                    if(isSpace&&cycleCounter%5==0) {
                         playerPlaneController.shoot();
 
                     }
                     if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
                         randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
                         EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
-                                Utils.loadImageFromFile("enemy_plane_white_3.png"), controllerManager.gameControllerVector);
+                                Utils.loadImageFromFile("enemy_plane_white_3.png"), EnemyPlaneController.Type.moveDownEnemy);
                         controllerManager.add(enemyPlaneController);
                     }
                     controllerManager.run();
-                    cycleCounter++;
+                    controllerManager.checkOverLap();
+
                     repaint();
+                    cycleCounter++;
+
                 }
             }
 
@@ -209,7 +212,7 @@ public class GameWindow extends Frame {
 
 
             controllerManager.draw(backGraphics);
-            controllerManager.checkOverLap();
+
 
 //            for (EnemyPlaneController temp : enemyPlaneExplosionList) {
 //                temp.getView().drawExplosion(backGraphics, temp.getModel());

@@ -73,8 +73,17 @@ public class ControllerManager {
 
                if(controller1.getModel().intersects(controller2.getModel()))
                {
-                   controller1.getModel().setExist(false);
-                   controller2.getModel().setExist(false);
+                   if((controller1 instanceof PlayerBulletController)&&((controller2 instanceof PlayerBulletController)))
+                   {
+                    ;
+                   }
+                   else
+                   {
+                       controller1.getModel().setExist(false);
+                       controller2.getModel().setExist(false);
+                   }
+
+
                }
            }
        }

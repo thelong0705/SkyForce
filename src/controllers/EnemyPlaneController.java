@@ -19,15 +19,20 @@ import java.util.Vector;
  */
 public class EnemyPlaneController extends GameController {
 
-    public EnemyPlaneController(EnemyPlaneModel model, EnemyPlaneView view) {
+    public enum Type{
+        moveDownEnemy, moveCrossEnemy
+    }
+    private Type type;
+    public EnemyPlaneController(EnemyPlaneModel model, EnemyPlaneView view,Type type) {
         super(model, view);
+        this.type=type;
 
     }
 
 
-    public EnemyPlaneController(int x, int y, Image image,Vector<GameController> gameControllers) {
+    public EnemyPlaneController(int x, int y, Image image,Type type) {
         this(new EnemyPlaneModel(x, y, GameWindow.ENEMYPLANEWIDTH, GameWindow.ENEMYPLANEHEIGHT,GameWindow.ENEMYPLANESPEED),
-                new EnemyPlaneView(image));
+                new EnemyPlaneView(image),type);
     }
 
     public void run(Vector<EnemyBulletController> enemyBulletControllerVector)
