@@ -13,6 +13,16 @@ public class GameModel {
     protected  int height;
     protected boolean isExist=true;
 
+    public void setStateOfExplosion(int stateOfExplosion) {
+        this.stateOfExplosion = stateOfExplosion;
+    }
+
+    protected int stateOfExplosion;
+    public int getStateOfExplosion() {
+        return stateOfExplosion;
+    }
+
+
     public GameModel(int x, int y, int width, int height,int speed) {
         this.x = x;
         this.y = y;

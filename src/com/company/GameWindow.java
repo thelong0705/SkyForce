@@ -25,42 +25,36 @@ public class GameWindow extends Frame {
     public boolean isSpace = false;
     public static final int frameWidthSize = 400;
     public static final int frameHeightSize = 600;
-    public static final int BACKGROUNDSPEED = 1;
-    public static final int PLAYERPLANESPEED = 5;
-    public static final int ENEMYPLANESPEED = 2;
-    public static final int PLAYERBULLETSPEED = 3;
-    public static final int ENEMYBULLETSPEED = 3;
-    public static final int PLANEWIDTH = 70;
-    public static final int PLANEHEIGHT = 50;
-    public static final int PLAYERBULLETWIDTH = 13;
-    public static final int PLAYERBULLETHEIGHT = 30;
-    public static final int ENEMYPLANEWIDTH = 32;
-    public static final int ENEMYPLANEHEIGHT = 32;
-    public static final int CYCLEBETWEENENEMYAPPEEAR = 60;
-    public static final int ENEMYBULLETWIDTH = 9;
-    public static final int ENEMYBULLETHEIGHT = 9;
+    public static final int BACK_GROUND_SPEED = 1;
+    public static final int PLAYER_PLANE_SPEED = 5;
+    public static final int ENEMY_PLANE_SPEED = 2;
+    public static final int PLAYER_BULLET_SPEED = 3;
+    public static final int ENEMY_BULLET_SPEED = 3;
+    public static final int PLANE_WIDTH = 70;
+    public static final int PLANE_HEIGHT = 50;
+    public static final int PLAYER_BULLET_WIDTH = 13;
+    public static final int PLAYER_BULLET_HEIGHT = 30;
+    public static final int ENEMY_PLANE_WIDTH = 32;
+    public static final int ENEMY_PLANE_HEIGHT = 32;
+    public static final int CYCLE_BETWEEN_ENEMYAPPEEAR = 60;
+    public static final int ENEMY_BULLET_WIDTH = 9;
+    public static final int ENEMY_BULLET_HEIGHT = 9;
     private BackGround backgroundImage;
     private BackGround backgroundImage2;
     Island island1;
     Island island2;
-    EnemyBullet enemyBullet;
     PowerUp powerUp;
     private BufferedImage backBufferedImage;
     Thread thread;
     Thread thread1;
     private Graphics backGraphics;
-    //public static PlayerPlaneController playerPlaneController;
     public static ControllerManager controllerManager;
     public GameWindow() {
         controllerManager = new ControllerManager();
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
-
-      //  playerPlaneController = new PlayerPlaneController(frameWidthSize / 2 - PLANEWIDTH / 2,
-            //    frameHeightSize - PLANEHEIGHT, controllerManager.gameControllerVector);
-
-        island1 = new Island("island.png", 200, 200, BACKGROUNDSPEED);
-        island2 = new Island("island-2.png", 50, 400, BACKGROUNDSPEED);
+        island1 = new Island("island.png", 200, 200, BACK_GROUND_SPEED);
+        island2 = new Island("island-2.png", 50, 400, BACK_GROUND_SPEED);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent windowEvent) {
@@ -74,17 +68,16 @@ public class GameWindow extends Frame {
                 System.exit(0);
             }
         });
-        backgroundImage = new BackGround("background1.png", 0, 0,
-                BACKGROUNDSPEED, frameWidthSize, frameHeightSize);
-        backgroundImage2 = new BackGround("background1.png", 0, -frameHeightSize,
-                BACKGROUNDSPEED, frameWidthSize, frameHeightSize);
+        backgroundImage = new BackGround("background.png", 0, 0,
+                BACK_GROUND_SPEED, frameWidthSize, frameHeightSize);
+        backgroundImage2 = new BackGround("background.png", 0, -frameHeightSize,
+                BACK_GROUND_SPEED, frameWidthSize, frameHeightSize);
 
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyTyped(KeyEvent keyEvent) {
                 super.keyTyped(keyEvent);
             }
-
             @Override
             public void keyPressed(KeyEvent keyEvent) {
                 super.keyPressed(keyEvent);
@@ -129,7 +122,6 @@ public class GameWindow extends Frame {
                 }
             }
         });
-
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -154,13 +146,13 @@ public class GameWindow extends Frame {
                         PlayerPlaneController.instance.shoot();
 
                     }
-                    if (cycleCounter % CYCLEBETWEENENEMYAPPEEAR == 0) {
+                    if (cycleCounter % CYCLE_BETWEEN_ENEMYAPPEEAR == 0) {
                         randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
                         EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
                                 Utils.loadImageFromFile("enemy_plane_white_3.png"), EnemyPlaneController.Type.moveDownEnemy);
                         controllerManager.add(enemyPlaneController);
                     }
-                    if(cycleCounter % (CYCLEBETWEENENEMYAPPEEAR*3)==0)
+                    if(cycleCounter % (CYCLE_BETWEEN_ENEMYAPPEEAR*3)==0)
                     {
                         EnemyPlaneController enemyPlaneController = new EnemyPlaneController(0, 0,
                                 Utils.loadImageFromFile("enemy-green-1.png"), EnemyPlaneController.Type.moveCrossEnemy);
@@ -168,7 +160,6 @@ public class GameWindow extends Frame {
                     }
                     controllerManager.run();
                     controllerManager.checkOverLap();
-
                     repaint();
                     cycleCounter++;
 
@@ -212,28 +203,14 @@ public class GameWindow extends Frame {
                     backgroundImage2.getWidth(), backgroundImage2.getHeight(), null);
             backGraphics.drawImage(island2.getImage(), island2.getX(), island2.getY(), null);
             backGraphics.drawImage(island1.getImage(), island1.getX(), island1.getY(), null);
-
             PlayerPlaneController.instance.draw(backGraphics);
-
-
             controllerManager.draw(backGraphics);
-
-
-//            for (EnemyPlaneController temp : enemyPlaneExplosionList) {
-//                temp.getView().drawExplosion(backGraphics, temp.getModel());
-//            }
-
-//            for(EnemyBulletController enemyBulletController: controllerManager.enemyBulletControllerVector)
-//            {
-//                enemyBulletController.draw(backGraphics);
-//            }
             if (powerUp != null) {
                 backGraphics.drawImage(powerUp.getImage(), powerUp.getX(), powerUp.getY(), null);
                 powerUp.moveDown();
                 if (powerUp.getY() > frameHeightSize)
                     powerUp = null;
             }
-
             backgroundImage.moveDown();
             backgroundImage2.moveDown();
             island1.moveDown();
@@ -241,5 +218,4 @@ public class GameWindow extends Frame {
             graphics.drawImage(backBufferedImage, 0, 0, null);
         }
     }
-
 }

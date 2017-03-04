@@ -1,5 +1,6 @@
 package views;
 
+import com.company.Utils;
 import models.GameModel;
 import models.PlayerBulletModel;
 
@@ -20,6 +21,16 @@ public class GameView {
     }
 
     public void draw(Graphics g, GameModel model) {
+        g.drawImage(image, model.getX(),
+                model.getY(),
+                model.getWidth(),
+                model.getHeight(),
+                null);
+    }
+    public void drawExplosion(Graphics g, GameModel model) {
+        model.setStateOfExplosion(model.getStateOfExplosion()+1);
+        if (model.getStateOfExplosion()<=6)
+            image = Utils.loadImageFromFile("explosion" + model.getStateOfExplosion() + ".png");
         g.drawImage(image, model.getX(),
                 model.getY(),
                 model.getWidth(),

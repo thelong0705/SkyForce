@@ -2,25 +2,19 @@ package controllers;
 
 
 import com.company.GameWindow;
-import com.company.PlayerBullet;
-import com.company.PlayerPlane;
 import com.company.Utils;
-import models.GameModel;
-import models.PlayerBulletModel;
 import models.PlayerPlaneModel;
 import views.GameView;
 import views.PlayerPlaneView;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Vector;
 
 /**
  * Created by Inpriron on 2/27/2017.
  */
 public class PlayerPlaneController extends GameController {
-    public static final PlayerPlaneController instance =   new PlayerPlaneController(GameWindow.frameWidthSize / 2 - GameWindow.PLANEWIDTH / 2,
-            GameWindow.frameHeightSize - GameWindow.PLANEHEIGHT, GameWindow.controllerManager.gameControllerVector);;
+    public static final PlayerPlaneController instance =   new PlayerPlaneController(GameWindow.frameWidthSize / 2 - GameWindow.PLANE_WIDTH / 2,
+            GameWindow.frameHeightSize - GameWindow.PLANE_HEIGHT, GameWindow.controllerManager.gameControllerVector);;
     private Vector<GameController> playerBulletControllers;
     public PlayerPlaneController(PlayerPlaneModel model, GameView view,Vector<GameController> playerBulletControllers) {
         super(model, view);
@@ -28,7 +22,7 @@ public class PlayerPlaneController extends GameController {
     }
 
     public PlayerPlaneController(int x, int y,Vector<GameController> playerBulletControllers) {
-        this(new PlayerPlaneModel(x, y, GameWindow.PLANEWIDTH, GameWindow.PLANEHEIGHT,GameWindow.PLAYERPLANESPEED),
+        this(new PlayerPlaneModel(x, y, GameWindow.PLANE_WIDTH, GameWindow.PLANE_HEIGHT,GameWindow.PLAYER_PLANE_SPEED),
                 new PlayerPlaneView(Utils.loadImageFromFile("plane3.png")),playerBulletControllers);
     }
 
@@ -65,15 +59,15 @@ public class PlayerPlaneController extends GameController {
 //    public ArrayList<PlayerBulletController> shootBullet(ArrayList<PlayerBulletController> playerBulletControllerList) {
 //        PlayerBulletController playerBulletController
 //                = new PlayerBulletController(
-//                model.getX() + (GameWindow.PLANEWIDTH - GameWindow.PLAYERBULLETWIDTH) / 2,
-//                model.getY() - GameWindow.PLAYERBULLETHEIGHT);
+//                model.getX() + (GameWindow.PLANE_WIDTH - GameWindow.PLAYER_BULLET_WIDTH) / 2,
+//                model.getY() - GameWindow.PLAYER_BULLET_HEIGHT);
 //        playerBulletControllerList.add(playerBulletController);
 //        return playerBulletControllerList;
 //    }
     public void shoot()
     {
-        PlayerBulletController playerBulletController= new PlayerBulletController((int)model.getMidX()-GameWindow.PLAYERBULLETWIDTH/2,
-                model.getY()-GameWindow.PLAYERBULLETHEIGHT);
+        PlayerBulletController playerBulletController= new PlayerBulletController((int)model.getMidX()-GameWindow.PLAYER_BULLET_WIDTH /2,
+                model.getY()-GameWindow.PLAYER_BULLET_HEIGHT);
         playerBulletControllers.add(playerBulletController);
     }
 }

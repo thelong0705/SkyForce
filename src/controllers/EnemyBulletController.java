@@ -1,14 +1,11 @@
 package controllers;
 
-import com.company.EnemyBullet;
 import com.company.GameWindow;
 import com.company.Utils;
 import models.EnemyBulletModel;
 import models.GameModel;
 import views.EnemyBulletView;
 import views.GameView;
-
-import java.awt.*;
 
 /**
  * Created by Inpriron on 2/27/2017.
@@ -24,7 +21,7 @@ public class EnemyBulletController extends GameController {
     }
 
     public EnemyBulletController(int x, int y,Type type) {
-        this( new EnemyBulletModel(x,y,GameWindow.ENEMYBULLETWIDTH,GameWindow.ENEMYBULLETHEIGHT,GameWindow.ENEMYBULLETSPEED),
+        this( new EnemyBulletModel(x,y,GameWindow.ENEMY_BULLET_WIDTH,GameWindow.ENEMY_BULLET_HEIGHT,GameWindow.ENEMY_BULLET_SPEED),
                 new EnemyBulletView(Utils.loadImageFromFile("bullet-round.png")),type);
     }
 

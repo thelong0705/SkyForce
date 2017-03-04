@@ -33,6 +33,11 @@ public class GameController {
 
         view.draw(graphics, model);
     }
+
+    public void drawExplosion(Graphics graphics) {
+        view.drawExplosion(graphics,model);
+    }
+
     public void run()
     {
 

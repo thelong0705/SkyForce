@@ -1,15 +1,10 @@
 package controllers;
 
 import com.company.GameWindow;
-import com.company.PlayerBullet;
 import com.company.Utils;
-import models.GameModel;
 import models.PlayerBulletModel;
-import models.PlayerPlaneModel;
 import views.GameView;
 import views.PlayerBulletView;
-
-import java.awt.*;
 
 /**
  * Created by Inpriron on 2/26/2017.
@@ -21,7 +16,7 @@ public class PlayerBulletController extends GameController {
     }
 
         public PlayerBulletController(int x, int y) {
-        this( new PlayerBulletModel(x,y, GameWindow.PLAYERBULLETWIDTH,GameWindow.PLAYERBULLETHEIGHT,GameWindow.PLAYERBULLETSPEED),
+        this( new PlayerBulletModel(x,y, GameWindow.PLAYER_BULLET_WIDTH,GameWindow.PLAYER_BULLET_HEIGHT,GameWindow.PLAYER_BULLET_SPEED),
                 new PlayerBulletView(Utils.loadImageFromFile("bullet.png")));
     }
     public void run() {

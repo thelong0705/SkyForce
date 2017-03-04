@@ -1,7 +1,6 @@
 package controllers;
 
 import com.company.GameWindow;
-import com.company.PlayerBullet;
 
 import java.awt.*;
 import java.util.Iterator;
@@ -15,15 +14,19 @@ public class ControllerManager {
 
     public Vector<EnemyBulletController> enemyBulletControllerVector;
 
+    public Vector<GameController> gameControllerExplosionList;
     public ControllerManager() {
         this.gameControllerVector = new Vector<>();
         enemyBulletControllerVector = new Vector<>();
+        gameControllerExplosionList= new Vector<>();
     }
 
     public void draw(Graphics g) {
         for (GameController controller : gameControllerVector) {
             controller.draw(g);
         }
+        for(GameController controller: gameControllerExplosionList)
+            controller.drawExplosion(g);
     }
 
     public void run() {
@@ -56,6 +59,16 @@ public class ControllerManager {
             gameControllerVector.add(temp);
             iter.remove();
         }
+        Iterator<GameController> iter1= gameControllerExplosionList.iterator();
+        {
+            while(iter1.hasNext())
+            {
+                GameController temp= iter1.next();
+                if(temp.getModel().getStateOfExplosion()==6)
+                    iter1.remove();
+            }
+
+        }
     }
 
     public void checkOverLap() {
@@ -72,9 +85,8 @@ public class ControllerManager {
                     } else {
                         controller1.getModel().setExist(false);
                         controller2.getModel().setExist(false);
+                        gameControllerExplosionList.add(controller1);
                     }
-
-
                 }
             }
         }

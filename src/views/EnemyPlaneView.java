@@ -11,24 +11,12 @@ import java.awt.*;
  */
 public class EnemyPlaneView extends GameView{
 
-    private int stateOfExplosion;
+
 
     public EnemyPlaneView(Image image) {
         super(image);
     }
 
-    public int getStateOfExplosion() {
-        return stateOfExplosion;
-    }
 
-    public void drawExplosion(Graphics g, GameModel model) {
-        stateOfExplosion++;
-        if (stateOfExplosion <= 6)
-            image = Utils.loadImageFromFile("explosion" + stateOfExplosion + ".png");
-        g.drawImage(image, model.getX(),
-                model.getY(),
-                model.getWidth(),
-                model.getHeight(),
-                null);
-    }
+
 }
