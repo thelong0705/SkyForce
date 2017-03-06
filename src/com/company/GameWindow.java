@@ -68,9 +68,9 @@ public class GameWindow extends Frame {
                 System.exit(0);
             }
         });
-        backgroundImage = new BackGround("background.png", 0, 0,
+        backgroundImage = new BackGround("background1.png", 0, 0,
                 BACK_GROUND_SPEED, frameWidthSize, frameHeightSize);
-        backgroundImage2 = new BackGround("background.png", 0, -frameHeightSize,
+        backgroundImage2 = new BackGround("background1.png", 0, -frameHeightSize,
                 BACK_GROUND_SPEED, frameWidthSize, frameHeightSize);
 
         addKeyListener(new KeyAdapter() {

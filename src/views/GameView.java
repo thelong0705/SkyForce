@@ -28,14 +28,7 @@ public class GameView {
                 null);
     }
     public void drawExplosion(Graphics g, GameModel model) {
-        model.setStateOfExplosion(model.getStateOfExplosion()+1);
-        if (model.getStateOfExplosion()<=6)
-            image = Utils.loadImageFromFile("explosion" + model.getStateOfExplosion() + ".png");
-        g.drawImage(image, model.getX(),
-                model.getY(),
-                model.getWidth(),
-                model.getHeight(),
-                null);
+
     }
 }
 

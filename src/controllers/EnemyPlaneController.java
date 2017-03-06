@@ -3,6 +3,7 @@ package controllers;
 import com.company.GameWindow;
 import com.company.Utils;
 import models.EnemyPlaneModel;
+import models.GameModel;
 import views.EnemyPlaneView;
 
 import java.awt.*;
@@ -13,36 +14,35 @@ import java.util.Vector;
  */
 public class EnemyPlaneController extends GameController {
 
-    public enum Type{
+    public enum Type {
         moveDownEnemy, moveCrossEnemy
     }
+
     private Type type;
-    public EnemyPlaneController(EnemyPlaneModel model, EnemyPlaneView view,Type type) {
+
+    public EnemyPlaneController(EnemyPlaneModel model, EnemyPlaneView view, Type type) {
         super(model, view);
-        this.type=type;
+        this.type = type;
 
     }
 
-
-    public EnemyPlaneController(int x, int y, Image image,Type type) {
-        this(new EnemyPlaneModel(x, y, GameWindow.ENEMY_PLANE_WIDTH, GameWindow.ENEMY_PLANE_HEIGHT,GameWindow.ENEMY_PLANE_SPEED),
-                new EnemyPlaneView(image),type);
+    public EnemyPlaneController(int x, int y, Image image, Type type) {
+        this(new EnemyPlaneModel(x, y, GameWindow.ENEMY_PLANE_WIDTH, GameWindow.ENEMY_PLANE_HEIGHT, GameWindow.ENEMY_PLANE_SPEED),
+                new EnemyPlaneView(image), type);
     }
 
-    public void run(Vector<EnemyBulletController> enemyBulletControllerVector)
-    {
-        if(type==Type.moveDownEnemy)
-        {
+    @Override
+    public void run() {
+        super.run();
+        if (type == Type.moveDownEnemy) {
             moveDown();
-            shootBullet(enemyBulletControllerVector);
-        }
-        else
-        {
+            shootBullet();
+        } else {
             moveCrossToRight();
-            shootBombTowardPlayer(enemyBulletControllerVector);
+            shootBombTowardPlayer();
         }
-
     }
+
     public void moveDown() {
         if (model instanceof EnemyPlaneModel) {
             EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
@@ -50,44 +50,51 @@ public class EnemyPlaneController extends GameController {
         }
     }
 
-    public void moveCrossToRight(){
+    public void moveCrossToRight() {
         if (model instanceof EnemyPlaneModel) {
             EnemyPlaneModel planeModel = (EnemyPlaneModel) model;
             planeModel.moveCrossToRight();
         }
     }
 
-    public EnemyPlaneView getView()
-    {
+    public EnemyPlaneView getView() {
         if (view instanceof EnemyPlaneView) {
             EnemyPlaneView planeView = (EnemyPlaneView) view;
             return planeView;
         }
-       return null;
+        return null;
     }
-    public void shootBullet(Vector<EnemyBulletController> enemyBulletControllerVector) {
-        if(model.getY()%150==0)
-        {
+
+    public void shootBullet() {
+        if (model.getY() % 150 == 0) {
             EnemyBulletController enemyBulletController
                     = new EnemyBulletController(
                     model.getX() + (GameWindow.ENEMY_PLANE_WIDTH - GameWindow.ENEMY_BULLET_WIDTH) / 2,
-                    model.getY() + GameWindow.ENEMY_PLANE_HEIGHT,EnemyBulletController.Type.BULLET);
-            enemyBulletControllerVector.add(enemyBulletController);
+                    model.getY() + GameWindow.ENEMY_PLANE_HEIGHT, EnemyBulletController.Type.BULLET);
+            GameWindow.controllerManager.enemyBulletControllerVector.add(enemyBulletController);
         }
 
     }
-    public void shootBombTowardPlayer(Vector<EnemyBulletController> enemyBulletControllerVector)
-    {
-        if(model.getY()%50==0)
-        {
+
+    public void shootBombTowardPlayer() {
+        if (model.getY() % 50 == 0) {
             EnemyBulletController enemyBulletController
                     = new EnemyBulletController(
                     model.getX() + (GameWindow.ENEMY_PLANE_WIDTH - GameWindow.ENEMY_BULLET_WIDTH) / 2,
-                    model.getY() + GameWindow.ENEMY_PLANE_HEIGHT +50,EnemyBulletController.Type.BOMB);
-            enemyBulletController.getModel().setWidth(GameWindow.ENEMY_BULLET_WIDTH *2);
-            enemyBulletController.getModel().setHeight(GameWindow.ENEMY_BULLET_HEIGHT *2);
+                    model.getY() + GameWindow.ENEMY_PLANE_HEIGHT + 20, EnemyBulletController.Type.BOMB);
+            enemyBulletController.getModel().setWidth(GameWindow.ENEMY_BULLET_WIDTH * 2);
+            enemyBulletController.getModel().setHeight(GameWindow.ENEMY_BULLET_HEIGHT * 2);
             enemyBulletController.getView().setImage(Utils.loadImageFromFile("bomb.png"));
-            enemyBulletControllerVector.add(enemyBulletController);
+            GameWindow.controllerManager.enemyBulletControllerVector.add(enemyBulletController);
         }
     }
+
+    @Override
+    public void onContact(GameController gameController) {
+        if (gameController instanceof PlayerBulletController||gameController instanceof EnemyBulletController) {
+            this.model.setExist(false);
+            GameWindow.controllerManager.gameControllerExplosionList.add(this);
+        }
+    }
+
 }

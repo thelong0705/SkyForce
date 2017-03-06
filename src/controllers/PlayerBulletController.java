@@ -26,4 +26,9 @@ public class PlayerBulletController extends GameController {
         }
     }
 
+    @Override
+    public void onContact(GameController gameController) {
+        if(!(gameController instanceof PlayerBulletController))
+            this.model.setExist(false);
+    }
 }

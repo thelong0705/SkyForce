@@ -1,6 +1,8 @@
 package views;
 
+import com.company.Utils;
 import models.EnemyBulletModel;
+import models.GameModel;
 import models.PlayerBulletModel;
 
 import java.awt.*;
@@ -14,6 +16,15 @@ public class EnemyBulletView extends GameView {
         super(image);
     }
 
-
-
+    @Override
+    public void drawExplosion(Graphics g, GameModel model) {
+        model.setStateOfExplosion(model.getStateOfExplosion()+1);
+        if (model.getStateOfExplosion()<=6)
+            image = Utils.loadImageFromFile("BulletExplosion" + model.getStateOfExplosion() + ".png");
+        g.drawImage(image, model.getX(),
+                model.getY(),
+                model.getWidth(),
+                model.getHeight(),
+                null);
+    }
 }

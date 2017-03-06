@@ -25,33 +25,25 @@ public class ControllerManager {
         for (GameController controller : gameControllerVector) {
             controller.draw(g);
         }
-        for(GameController controller: gameControllerExplosionList)
+         for(GameController controller: gameControllerExplosionList)
             controller.drawExplosion(g);
     }
 
     public void run() {
 
+
         Iterator<GameController> gameControllerIterator = gameControllerVector.iterator();
+        while (gameControllerIterator.hasNext())
         {
-            while (gameControllerIterator.hasNext()) {
-                GameController controller = gameControllerIterator.next();
-                if (controller.getModel().getY() > GameWindow.frameHeightSize || controller.getModel().getY() < 0)
-                    gameControllerIterator.remove();
-                else if (!controller.getModel().isExist()) {
-                    gameControllerIterator.remove();
-                } else {
-                    if (controller instanceof PlayerBulletController) {
-                        PlayerBulletController playerBulletController = (PlayerBulletController) controller;
-                        playerBulletController.run();
-                    } else if (controller instanceof EnemyPlaneController) {
-                        EnemyPlaneController enemyPlaneController = (EnemyPlaneController) controller;
-                        enemyPlaneController.run(enemyBulletControllerVector);
-                    } else if (controller instanceof EnemyBulletController) {
-                        EnemyBulletController enemyBulletController = (EnemyBulletController) controller;
-                        enemyBulletController.run();
-                    }
-                }
-            }
+            GameController controller = gameControllerIterator.next();
+
+                 if (!controller.getModel().isExist()) {
+                     gameControllerIterator.remove();
+                 }
+                 else
+                 {
+                     controller.run();
+                 }
         }
         Iterator<EnemyBulletController> iter = enemyBulletControllerVector.iterator();
         while (iter.hasNext()) {
@@ -64,7 +56,7 @@ public class ControllerManager {
             while(iter1.hasNext())
             {
                 GameController temp= iter1.next();
-                if(temp.getModel().getStateOfExplosion()==6)
+                if(temp.getModel().getStateOfExplosion()== 6)
                     iter1.remove();
             }
 
@@ -80,13 +72,8 @@ public class ControllerManager {
                 GameController controller2 = gameControllerVector.get(j);
 
                 if (controller1.getModel().intersects(controller2.getModel())) {
-                    if ((controller1 instanceof PlayerBulletController) && ((controller2 instanceof PlayerBulletController))) {
-                        ;
-                    } else {
-                        controller1.getModel().setExist(false);
-                        controller2.getModel().setExist(false);
-                        gameControllerExplosionList.add(controller1);
-                    }
+                   controller1.onContact(controller2);
+                   controller2.onContact(controller1);
                 }
             }
         }

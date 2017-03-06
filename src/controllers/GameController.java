@@ -1,5 +1,6 @@
 package controllers;
 
+import com.company.GameWindow;
 import models.GameModel;
 import views.GameView;
 
@@ -40,6 +41,20 @@ public class GameController {
 
     public void run()
     {
+        checkOutSideScreen();
+    }
 
+    public void onContact(GameController gameController)
+    {
+
+    }
+    public void checkOutSideScreen()
+    {
+        int x= this.model.getX();
+        int y= this.model.getY();
+        if(x<0||x> GameWindow.frameWidthSize||y<0||y>GameWindow.frameHeightSize)
+        {
+            this.model.setExist(false);
+        }
     }
 }

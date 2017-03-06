@@ -25,7 +25,11 @@ public class EnemyBulletController extends GameController {
                 new EnemyBulletView(Utils.loadImageFromFile("bullet-round.png")),type);
     }
 
+
+
+    @Override
     public void run() {
+        super.run();
         if(model instanceof EnemyBulletModel)
         {
             EnemyBulletModel enemyBulletModel= (EnemyBulletModel) model;
@@ -34,5 +38,12 @@ public class EnemyBulletController extends GameController {
             else
                 enemyBulletModel.flyToPlayerPlane();
         }
+
+    }
+
+    @Override
+    public void onContact(GameController gameController) {
+        this.model.setExist(false);
+        GameWindow.controllerManager.gameControllerExplosionList.add(this);
     }
 }
