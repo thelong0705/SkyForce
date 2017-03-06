@@ -22,28 +22,25 @@ public class ControllerManager {
     }
 
     public void draw(Graphics g) {
+        for(GameController controller: gameControllerExplosionList)
+            controller.drawExplosion(g);
         for (GameController controller : gameControllerVector) {
             controller.draw(g);
         }
-         for(GameController controller: gameControllerExplosionList)
-            controller.drawExplosion(g);
+
     }
 
     public void run() {
-
-
         Iterator<GameController> gameControllerIterator = gameControllerVector.iterator();
         while (gameControllerIterator.hasNext())
         {
             GameController controller = gameControllerIterator.next();
 
-                 if (!controller.getModel().isExist()) {
+                 if (!controller.getModel().isExist())
                      gameControllerIterator.remove();
-                 }
                  else
-                 {
                      controller.run();
-                 }
+
         }
         Iterator<EnemyBulletController> iter = enemyBulletControllerVector.iterator();
         while (iter.hasNext()) {
@@ -56,10 +53,9 @@ public class ControllerManager {
             while(iter1.hasNext())
             {
                 GameController temp= iter1.next();
-                if(temp.getModel().getStateOfExplosion()== 6)
+                if(temp.getModel().getStateOfExplosion()>5 )
                     iter1.remove();
             }
-
         }
     }
 
@@ -83,8 +79,6 @@ public class ControllerManager {
         gameControllerVector.add(controller);
     }
 
-    public void delete(GameController controller) {
-        gameControllerVector.remove(controller);
-    }
+
 
 }

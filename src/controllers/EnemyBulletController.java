@@ -43,7 +43,11 @@ public class EnemyBulletController extends GameController {
 
     @Override
     public void onContact(GameController gameController) {
-        this.model.setExist(false);
-        GameWindow.controllerManager.gameControllerExplosionList.add(this);
+        if(gameController instanceof PlayerBulletController)
+        {
+            this.model.setExist(false);
+            GameWindow.controllerManager.gameControllerExplosionList.add(this);
+        }
+
     }
 }

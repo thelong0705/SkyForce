@@ -37,13 +37,17 @@ public class GameWindow extends Frame {
     public static final int ENEMY_PLANE_WIDTH = 32;
     public static final int ENEMY_PLANE_HEIGHT = 32;
     public static final int CYCLE_BETWEEN_ENEMYAPPEEAR = 60;
+    public static final int CYCLE_BETWEEN_ENEMY_CROSS_APPEAR = 60*3;
+    public static final int CYCLE_BETWEEN_POWER_UP_APPEAR=60*4;
     public static final int ENEMY_BULLET_WIDTH = 9;
     public static final int ENEMY_BULLET_HEIGHT = 9;
+    public static final int POWER_UP_WIDTH = 24;
+    public static final int POWER_UP_HEIGHT = 24;
+    public static final int POWER_UP_SPEED = 3;
     private BackGround backgroundImage;
     private BackGround backgroundImage2;
     Island island1;
     Island island2;
-    PowerUp powerUp;
     private BufferedImage backBufferedImage;
     Thread thread;
     Thread thread1;
@@ -51,6 +55,7 @@ public class GameWindow extends Frame {
     public static ControllerManager controllerManager;
     public GameWindow() {
         controllerManager = new ControllerManager();
+        controllerManager.add(PlayerPlaneController.instance);
         setVisible(true);
         setSize(frameWidthSize, frameHeightSize);
         island1 = new Island("island.png", 200, 200, BACK_GROUND_SPEED);
@@ -133,7 +138,6 @@ public class GameWindow extends Frame {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
                     if (isKeyRight)
                         PlayerPlaneController.instance.moveRight();
                     if (isKeyLeft)
@@ -152,36 +156,25 @@ public class GameWindow extends Frame {
                                 Utils.loadImageFromFile("enemy_plane_white_3.png"), EnemyPlaneController.Type.moveDownEnemy);
                         controllerManager.add(enemyPlaneController);
                     }
-                    if(cycleCounter % (CYCLE_BETWEEN_ENEMYAPPEEAR*3)==0)
+                    if(cycleCounter % CYCLE_BETWEEN_ENEMY_CROSS_APPEAR==0)
                     {
                         EnemyPlaneController enemyPlaneController = new EnemyPlaneController(0, 0,
                                 Utils.loadImageFromFile("enemy-green-1.png"), EnemyPlaneController.Type.moveCrossEnemy);
                         controllerManager.add(enemyPlaneController);
                     }
+                    if(cycleCounter%CYCLE_BETWEEN_POWER_UP_APPEAR==0&&cycleCounter!=0)
+                    {
+                        randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+                        PowerUpController powerUpController= new PowerUpController(randomX,0);
+                        controllerManager.add(powerUpController);
+                    }
                     controllerManager.run();
                     controllerManager.checkOverLap();
                     repaint();
                     cycleCounter++;
-
                 }
             }
 
-        });
-        thread1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-                    try {
-                        Thread.sleep(5000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                    int randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize - 50);
-                    int randomY = ThreadLocalRandom.current().nextInt(50, 200);
-                    powerUp = new PowerUp("power-up.png", randomX, randomY, 3);
-                }
-            }
         });
         backBufferedImage = new BufferedImage(frameWidthSize, frameHeightSize, BufferedImage.TYPE_INT_ARGB);
         backGraphics = backBufferedImage.getGraphics();
@@ -190,7 +183,7 @@ public class GameWindow extends Frame {
 
     public void start() {
         thread.start();
-        thread1.start();
+
     }
 
     @Override
@@ -203,14 +196,7 @@ public class GameWindow extends Frame {
                     backgroundImage2.getWidth(), backgroundImage2.getHeight(), null);
             backGraphics.drawImage(island2.getImage(), island2.getX(), island2.getY(), null);
             backGraphics.drawImage(island1.getImage(), island1.getX(), island1.getY(), null);
-            PlayerPlaneController.instance.draw(backGraphics);
             controllerManager.draw(backGraphics);
-            if (powerUp != null) {
-                backGraphics.drawImage(powerUp.getImage(), powerUp.getX(), powerUp.getY(), null);
-                powerUp.moveDown();
-                if (powerUp.getY() > frameHeightSize)
-                    powerUp = null;
-            }
             backgroundImage.moveDown();
             backgroundImage2.moveDown();
             island1.moveDown();
