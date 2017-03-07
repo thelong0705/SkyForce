@@ -83,6 +83,11 @@ public class PlayerPlaneController extends GameController {
                 GameWindow.controllerManager.add(playerBulletControllerLeft);
                 GameWindow.controllerManager.add(playerBulletControllerRight);
                 break;
+            case shootBomb:
+                PlayerBombController playerBombController= new PlayerBombController((int) model.getMidX() - GameWindow.PLAYER_BULLET_WIDTH / 2,
+                        model.getY() - GameWindow.PLAYER_BULLET_HEIGHT);
+                GameWindow.controllerManager.add(playerBombController);
+                break;
 
         }
         if (playerBulletController != null)
@@ -100,13 +105,13 @@ public class PlayerPlaneController extends GameController {
     private void upgradeBullet() {
         switch (typeOfShoot) {
             case shootNormal:
-                typeOfShoot = TypeOfShoot.shootDouble;
+                typeOfShoot = TypeOfShoot.shootDouble ;
                 break;
             case shootDouble:
                 typeOfShoot = TypeOfShoot.shootTriple;
                 break;
             case shootTriple:
-
+                typeOfShoot= TypeOfShoot.shootBomb;
                 break;
         }
     }

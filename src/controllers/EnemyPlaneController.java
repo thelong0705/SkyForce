@@ -84,17 +84,18 @@ public class EnemyPlaneController extends GameController {
                     model.getY() + GameWindow.ENEMY_PLANE_HEIGHT , EnemyBulletController.Type.BOMB);
             enemyBulletController.getModel().setWidth(GameWindow.ENEMY_BULLET_WIDTH * 2);
             enemyBulletController.getModel().setHeight(GameWindow.ENEMY_BULLET_HEIGHT * 2);
-            enemyBulletController.getView().setImage(Utils.loadImageFromFile("bomb.png"));
+            enemyBulletController.getView().setImage(Utils.loadImageFromFile("mine.png"));
             GameWindow.controllerManager.enemyBulletControllerVector.add(enemyBulletController);
         }
     }
 
     @Override
     public void onContact(GameController gameController) {
-        if (gameController instanceof PlayerBulletController) {
+        if (gameController instanceof PlayerBulletController||gameController instanceof PlayerBombController) {
             this.model.setExist(false);
             GameWindow.controllerManager.gameControllerExplosionList.add(this);
         }
+
     }
 
 }
