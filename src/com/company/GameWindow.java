@@ -150,24 +150,24 @@ public class GameWindow extends Frame {
                         PlayerPlaneController.instance.shoot();
 
                     }
-                    if (cycleCounter % CYCLE_BETWEEN_ENEMYAPPEEAR == 0) {
-                        randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-                        EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
-                                Utils.loadImageFromFile("enemy_plane_white_3.png"), EnemyPlaneController.Type.moveDownEnemy);
-                        controllerManager.add(enemyPlaneController);
-                    }
-                    if(cycleCounter % CYCLE_BETWEEN_ENEMY_CROSS_APPEAR==0)
-                    {
-                        EnemyPlaneController enemyPlaneController = new EnemyPlaneController(0, 0,
-                                Utils.loadImageFromFile("enemy-green-1.png"), EnemyPlaneController.Type.moveCrossEnemy);
-                        controllerManager.add(enemyPlaneController);
-                    }
-                    if(cycleCounter%CYCLE_BETWEEN_POWER_UP_APPEAR==0&&cycleCounter!=0)
-                    {
-                        randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-                        PowerUpController powerUpController= new PowerUpController(randomX,0);
-                        controllerManager.add(powerUpController);
-                    }
+//                    if (cycleCounter % CYCLE_BETWEEN_ENEMYAPPEEAR == 0) {
+//                        randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+//                        EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
+//                                Utils.loadImageFromFile("enemy_plane_white_3.png"), EnemyPlaneController.Type.moveDownEnemy);
+//                        controllerManager.add(enemyPlaneController);
+//                    }
+//                    if(cycleCounter % CYCLE_BETWEEN_ENEMY_CROSS_APPEAR==0)
+//                    {
+//                        EnemyPlaneController enemyPlaneController = new EnemyPlaneController(0, 0,
+//                                Utils.loadImageFromFile("enemy-green-1.png"), EnemyPlaneController.Type.moveCrossEnemy);
+//                        controllerManager.add(enemyPlaneController);
+//                    }
+//                    if(cycleCounter%CYCLE_BETWEEN_POWER_UP_APPEAR==0&&cycleCounter!=0)
+//                    {
+//                        randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+//                        PowerUpController powerUpController= new PowerUpController(randomX,0);
+//                        controllerManager.add(powerUpController);
+//                    }
                     controllerManager.run();
                     controllerManager.checkOverLap();
                     repaint();

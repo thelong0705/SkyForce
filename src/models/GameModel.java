@@ -85,6 +85,17 @@ public class GameModel {
         isExist = exist;
     }
 
+    public void move(int dx, int dy)
+    {
+        x+=dx;
+        y+=dy;
+    }
+    public void moveCrossToRight() {
+        x += speed;
+        y = x + x / 2;
+
+    }
+
     public Rectangle getRect() {
         return new Rectangle(x, y, width, height);
     }

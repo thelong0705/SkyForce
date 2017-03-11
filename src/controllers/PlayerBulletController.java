@@ -49,10 +49,13 @@ public class PlayerBulletController extends GameController {
 
     @Override
     public void onContact(GameController gameController) {
-        if(!(gameController instanceof PlayerBulletController)&&!(gameController instanceof PlayerPlaneController))
+        if(!(gameController instanceof PlayerBulletController)&&!(gameController instanceof PlayerPlaneController)&&
+                !(gameController instanceof PlayerBombController))
         {
             this.model.setExist(false);
             GameWindow.controllerManager.gameControllerExplosionList.add(this);
         }
     }
 }
+
+

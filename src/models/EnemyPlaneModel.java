@@ -7,6 +7,11 @@ import com.company.GameWindow;
  */
 public class EnemyPlaneModel extends GameModel {
 
+    public enum EnemyType {
+        StraightDown,
+        CrossRight
+    }
+    private EnemyType enemyType;
     public EnemyPlaneModel(int x, int y, int width, int height, int speed) {
         super(x, y, width, height, speed);
     }
@@ -31,9 +36,5 @@ public class EnemyPlaneModel extends GameModel {
         x += speed;
     }
 
-    public void moveCrossToRight() {
-        x += speed;
-        y = x + x / 2;
 
-    }
 }

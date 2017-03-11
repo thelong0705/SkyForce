@@ -12,7 +12,7 @@ import views.GameView;
  */
 public class EnemyBulletController extends GameController {
     public enum Type {
-        BULLET, BOMB;
+        BULLET, MINE;
     }
 
     private Type type;
@@ -22,10 +22,10 @@ public class EnemyBulletController extends GameController {
         this.type = type;
     }
 
-    public EnemyBulletController(int x, int y, Type type) {
-        this(new EnemyBulletModel(x, y, GameWindow.ENEMY_BULLET_WIDTH, GameWindow.ENEMY_BULLET_HEIGHT, GameWindow.ENEMY_BULLET_SPEED),
-                new EnemyBulletView(Utils.loadImageFromFile("bullet-round.png")), type);
-    }
+//    public EnemyBulletController(int x, int y, Type type) {
+//        this(new EnemyBulletModel(x, y, GameWindow.ENEMY_BULLET_WIDTH, GameWindow.ENEMY_BULLET_HEIGHT, GameWindow.ENEMY_BULLET_SPEED),
+//                new EnemyBulletView(Utils.loadImageFromFile("bullet-round.png")), type);
+//    }
 
 
     @Override
