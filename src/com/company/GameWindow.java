@@ -36,9 +36,6 @@ public class GameWindow extends Frame {
     public static final int PLAYER_BULLET_HEIGHT = 30;
     public static final int ENEMY_PLANE_WIDTH = 32;
     public static final int ENEMY_PLANE_HEIGHT = 32;
-    public static final int CYCLE_BETWEEN_ENEMYAPPEEAR = 60;
-    public static final int CYCLE_BETWEEN_ENEMY_CROSS_APPEAR = 60*3;
-    public static final int CYCLE_BETWEEN_POWER_UP_APPEAR=60*4;
     public static final int ENEMY_BULLET_WIDTH = 9;
     public static final int ENEMY_BULLET_HEIGHT = 9;
     public static final int POWER_UP_WIDTH = 24;
@@ -46,6 +43,8 @@ public class GameWindow extends Frame {
     public static final int POWER_UP_SPEED = 3;
     private BackGround backgroundImage;
     private BackGround backgroundImage2;
+    public static int cycleCounter = 0;
+    public static int secondCounter=0;
     Island island1;
     Island island2;
     private BufferedImage backBufferedImage;
@@ -130,7 +129,7 @@ public class GameWindow extends Frame {
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                int cycleCounter = 0;
+
                 int randomX;
                 while (true) {
                     try {
@@ -150,28 +149,12 @@ public class GameWindow extends Frame {
                         PlayerPlaneController.instance.shoot();
 
                     }
-//                    if (cycleCounter % CYCLE_BETWEEN_ENEMYAPPEEAR == 0) {
-//                        randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-//                        EnemyPlaneController enemyPlaneController = new EnemyPlaneController(randomX, 0,
-//                                Utils.loadImageFromFile("enemy_plane_white_3.png"), EnemyPlaneController.Type.moveDownEnemy);
-//                        controllerManager.add(enemyPlaneController);
-//                    }
-//                    if(cycleCounter % CYCLE_BETWEEN_ENEMY_CROSS_APPEAR==0)
-//                    {
-//                        EnemyPlaneController enemyPlaneController = new EnemyPlaneController(0, 0,
-//                                Utils.loadImageFromFile("enemy-green-1.png"), EnemyPlaneController.Type.moveCrossEnemy);
-//                        controllerManager.add(enemyPlaneController);
-//                    }
-//                    if(cycleCounter%CYCLE_BETWEEN_POWER_UP_APPEAR==0&&cycleCounter!=0)
-//                    {
-//                        randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
-//                        PowerUpController powerUpController= new PowerUpController(randomX,0);
-//                        controllerManager.add(powerUpController);
-//                    }
+
                     controllerManager.run();
-                    controllerManager.checkOverLap();
                     repaint();
                     cycleCounter++;
+                    if(cycleCounter%60==0)
+                        secondCounter++;
                 }
             }
 

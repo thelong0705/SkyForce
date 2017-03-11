@@ -36,4 +36,5 @@ public class PowerUpController extends GameController {
             this.model.setExist(false);
         }
     }
+
 }

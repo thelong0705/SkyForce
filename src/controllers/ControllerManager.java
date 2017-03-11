@@ -6,6 +6,7 @@ import models.EnemyPlaneModel;
 import java.awt.*;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Inpriron on 3/1/2017.
@@ -17,8 +18,7 @@ public class ControllerManager {
 
     public Vector<GameController> gameControllerExplosionList;
 
-    private int cycleCount=0;
-    private int secondCounter=0;
+
     public ControllerManager() {
         this.gameControllerVector = new Vector<>();
         enemyBulletControllerVector = new Vector<>();
@@ -26,7 +26,7 @@ public class ControllerManager {
     }
 
     public void draw(Graphics g) {
-        synchronized (gameControllerExplosionList)
+       synchronized (gameControllerExplosionList)
         {
             for (GameController controller : gameControllerExplosionList)
                 controller.drawExplosion(g);
@@ -41,7 +41,9 @@ public class ControllerManager {
     }
 
     public void run() {
+        checkOverLap();
         spawnEnemies();
+        spawnPow();
         Iterator<GameController> gameControllerIterator = gameControllerVector.iterator();
         while (gameControllerIterator.hasNext()) {
             GameController controller = gameControllerIterator.next();
@@ -90,14 +92,24 @@ public class ControllerManager {
 
     public void spawnEnemies()
     {
-        cycleCount++;
-        if(cycleCount%60==0)
+
+        if(GameWindow.cycleCounter%60==0)
         {
-            secondCounter++;
-            if(secondCounter%2==0)
+            if(GameWindow.secondCounter%2==0)
                 this.add(EnemyPlaneController.create(EnemyPlaneModel.EnemyType.StraightDown));
-            else if(secondCounter%2==1)
+            else if(GameWindow.secondCounter%2==1)
                 this.add(EnemyPlaneController.create(EnemyPlaneModel.EnemyType.CrossRight));
         }
     }
+    public void spawnPow()
+    {
+       int  randomX = ThreadLocalRandom.current().nextInt(50, GameWindow.frameWidthSize);
+        if(GameWindow.cycleCounter%60==0)
+        {
+            if(GameWindow.secondCounter%4==0)
+                this.add(new PowerUpController(randomX,0));
+        }
+
+    }
+
 }
